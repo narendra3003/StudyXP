@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body { font-family: 'Inter', sans-serif; }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <aside class="w-64 bg-white shadow-lg flex flex-col">
+            <div class="p-6">
+                <h1 class="font-['Pacifico'] text-2xl text-primary">logo</h1>
+            </div>
+            <nav class="flex-1 px-4">
+                <div class="space-y-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-book-line"></i>
+                        </div>
+                        <span class="ml-3">Study Log</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-bar-chart-line"></i>
+                        </div>
+                        <span class="ml-3">Insights</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-notification-line"></i>
+                        </div>
+                        <span class="ml-3">Notifications</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-trophy-line"></i>
+                        </div>
+                        <span class="ml-3">Rewards</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="p-4">
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <img src="https://public.readdy.ai/ai/img_res/89272c6096ea69149e90a3b72e210c57.jpg" class="w-10 h-10 rounded-full object-cover" alt="Profile">
+                        <div class="ml-3">
+                            <p class="text-sm font-medium">Emily Parker</p>
+                            <p class="text-xs text-gray-500">Level 12</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto">
+            <header class="bg-white shadow-sm">
+                <div class="flex items-center justify-between px-8 py-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border rounded-lg text-sm w-64">
+                            <div class="absolute left-3 top-2.5 w-4 h-4 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="relative w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full">
+                            <i class="ri-notification-line"></i>
+                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                        <div class="flex items-center space-x-2">
+                            <img src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg" class="w-8 h-8 rounded-full object-cover" alt="Profile">
+                            <span class="text-sm font-medium">Emily Parker</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8">
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Today's Progress</h3>
+                            <span class="text-sm text-gray-500">March 1, 2025</span>
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <div class="text-3xl font-bold">4.5</div>
+                            <div class="text-lg text-gray-500 mb-1">hours</div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary" style="width: 75%"></div>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-500">75% of daily goal completed</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Current Streak</h3>
+                            <div class="w-8 h-8 flex items-center justify-center text-primary">
+                                <i class="ri-fire-line ri-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <div class="text-3xl font-bold">12</div>
+                            <div class="text-lg text-gray-500 mb-1">days</div>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <div class="flex-1 h-1 bg-primary rounded-full"></div>
+                            <div class="flex-1 h-1 bg-primary rounded-full"></div>
+                            <div class="flex-1 h-1 bg-primary rounded-full"></div>
+                            <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
+                            <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
+                        </div>
+                        <div class="mt-2 text-sm text-gray-500">3 days until next milestone</div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">XP Progress</h3>
+                            <div class="w-8 h-8 flex items-center justify-center text-yellow-500">
+                                <i class="ri-medal-line ri-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <div class="text-3xl font-bold">2,450</div>
+                            <div class="text-lg text-gray-500 mb-1">XP</div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-500" style="width: 80%"></div>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-500">550 XP to Level 13</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold">Study Time Distribution</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full">Week</button>
+                                <button class="px-3 py-1 text-sm text-white bg-primary rounded-full">Month</button>
+                            </div>
+                        </div>
+                        <div id="studyTimeChart" class="h-80"></div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold">Subject Distribution</h3>
+                            <div class="w-8 h-8 flex items-center justify-center text-gray-400">
+                                <i class="ri-pie-chart-line ri-xl"></i>
+                            </div>
+                        </div>
+                        <div id="subjectChart" class="h-80"></div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold">Recent Activities</h3>
+                        <button class="text-primary hover:text-primary-dark">View All</button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between py-3 border-b">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-lg text-blue-500">
+                                    <i class="ri-book-line ri-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Completed Mathematics Chapter 5</p>
+                                    <p class="text-sm text-gray-500">2 hours ago</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-medium text-blue-500">+150 XP</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-lg text-green-500">
+                                    <i class="ri-trophy-line ri-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Achieved "Early Bird" Badge</p>
+                                    <p class="text-sm text-gray-500">5 hours ago</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-medium text-green-500">Achievement</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-purple-100 rounded-lg text-purple-500">
+                                    <i class="ri-timer-line ri-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Study Session: Physics</p>
+                                    <p class="text-sm text-gray-500">Yesterday</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-medium text-purple-500">2.5 hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const studyTimeData = {
+            dates: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            hours: [3.5, 4.2, 3.8, 5.0, 4.5, 3.2, 4.5]
+        };
+
+        const studyTimeChart = echarts.init(document.getElementById('studyTimeChart'));
+        studyTimeChart.setOption({
+            animation: false,
+            grid: {
+                top: 10,
+                right: 10,
+                bottom: 20,
+                left: 40,
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: studyTimeData.dates,
+                axisLine: {
+                    lineStyle: { color: '#e5e7eb' }
+                },
+                axisLabel: { color: '#1f2937' }
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: {
+                    lineStyle: { color: '#e5e7eb' }
+                },
+                axisLabel: { color: '#1f2937' },
+                splitLine: {
+                    lineStyle: { color: '#f3f4f6' }
+                }
+            },
+            series: [{
+                data: studyTimeData.hours,
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                lineStyle: { width: 3 },
+                itemStyle: { color: 'rgba(87, 181, 231, 1)' },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(87, 181, 231, 0.2)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(87, 181, 231, 0.05)'
+                    }])
+                }
+            }]
+        });
+
+        const subjectData = [
+            { value: 40, name: 'Mathematics' },
+            { value: 30, name: 'Physics' },
+            { value: 20, name: 'Chemistry' },
+            { value: 10, name: 'Biology' }
+        ];
+
+        const subjectChart = echarts.init(document.getElementById('subjectChart'));
+        subjectChart.setOption({
+            animation: false,
+            tooltip: {
+                trigger: 'item',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                textStyle: { color: '#1f2937' }
+            },
+            series: [{
+                type: 'pie',
+                radius: ['40%', '70%'],
+                itemStyle: {
+                    borderRadius: 6,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: true,
+                    position: 'outside',
+                    formatter: '{b}: {d}%',
+                    color: '#1f2937'
+                },
+                data: subjectData,
+                color: [
+                    'rgba(87, 181, 231, 1)',
+                    'rgba(141, 211, 199, 1)',
+                    'rgba(251, 191, 114, 1)',
+                    'rgba(252, 141, 98, 1)'
+                ]
+            }]
+        });
+
+        window.addEventListener('resize', () => {
+            studyTimeChart.resize();
+            subjectChart.resize();
+        });
+    </script>
+</body>
+</html>

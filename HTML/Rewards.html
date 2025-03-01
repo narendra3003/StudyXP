@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#6366f1",
+              secondary: "#8b5cf6",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body { font-family: 'Inter', sans-serif; }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <aside class="w-64 bg-white shadow-lg flex flex-col">
+        <a href="Dashboard.html">
+        <div class="p-6">
+          <h1 class="font-['Pacifico'] text-2xl text-primary">logo</h1>
+        </div>
+    </a>
+        <nav class="flex-1 px-4">
+          <div class="space-y-2">
+            <a
+              href="dashboard.html"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+            >
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-dashboard-line"></i>
+              </div>
+              <span class="ml-3">Dashboard</span>
+            </a>
+            <a
+              href="insight.html"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+            >
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-bar-chart-line"></i>
+              </div>
+              <span class="ml-3">Insights</span>
+            </a>
+            <a
+              href="Rewards.html"
+              class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg"
+            >
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-trophy-line"></i>
+              </div>
+              <span class="ml-3">Rewards</span>
+            </a>
+          </div>
+        </nav>
+        <div class="p-4">
+          <div class="bg-gray-100 p-4 rounded-lg">
+            <div class="flex items-center">
+              <img
+                src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
+                class="w-10 h-10 rounded-full object-cover"
+                alt="Profile"
+              />
+              <div class="ml-3">
+                <p class="text-sm font-medium">Sanchita Warade</p>
+                <p class="text-xs text-gray-500">100 XP</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <main class="flex-1 overflow-y-auto bg-gray-50">
+        <header class="bg-white shadow-sm">
+          <div class="flex items-center justify-between px-8 py-4">
+            <h1 class="text-2xl font-bold">Rewards & Achievements</h1>
+            <div class="flex items-center space-x-4">
+                <a href="Rewards.html">
+                    <button
+                      class="relative w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full"
+                    >
+                      <i class="ri-notification-line"></i>
+                      <span
+                        class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"
+                      ></span>
+                    </button>
+                  </a>
+              <div class="flex items-center space-x-2">
+                <img
+                  src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
+                  class="w-8 h-8 rounded-full object-cover"
+                  alt="Profile"
+                />
+                <span class="text-sm font-medium">Sanchita Warade</span>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div class="p-8">
+          <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-8">
+              <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 class="text-lg font-semibold">XP Progress</h2>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500">1200</span>
+                    <span class="text-sm text-gray-500">XP</span>
+                    <div
+                      class="w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-lg text-yellow-500"
+                    >
+                      <i class="ri-medal-line ri-lg"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="relative pt-1">
+                  <div class="flex mb-2 items-center justify-between">
+                    <div>
+                      <span
+                        class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full bg-primary text-white"
+                      >
+                        Progress
+                      </span>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-xs font-semibold inline-block">
+                        2,450 / 3,000 XP
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200"
+                  >
+                    <div
+                      style="width:82%"
+                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary"
+                    ></div>
+                  </div>
+                  <div class="text-xs text-gray-500">
+                    550 XP needed for Level 13
+                  </div>
+                </div>
+                <div class="mt-6">
+                  <h3 class="text-sm font-medium mb-4">Recent XP Activity</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between text-sm">
+                      <div class="flex items-center space-x-3">
+                        <div
+                          class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-lg text-blue-500"
+                        >
+                          <i class="ri-book-line"></i>
+                        </div>
+                        <span>Mathematics Goal Completed</span>
+                      </div>
+                      <span class="font-medium text-primary">+150 XP</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                      <div class="flex items-center space-x-3">
+                        <div
+                          class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-lg text-green-500"
+                        >
+                          <i class="ri-timer-line"></i>
+                        </div>
+                        <span>Chemistry Goal Completed</span>
+                      </div>
+                      <span class="font-medium text-primary">+100 XP</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                      <div class="flex items-center space-x-3">
+                        <div
+                          class="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-lg text-purple-500"
+                        >
+                          <i class="ri-flag-line"></i>
+                        </div>
+                        <span>Daily Goal Achieved</span>
+                      </div>
+                      <span class="font-medium text-primary">+50 XP</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-span-4" style="height: auto;">
+              <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                <h2 class="text-lg font-semibold mb-4">Notification</h2>
+                <div class="flex items-center space-x-3">
+                    <div
+                      class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-lg text-blue-500"
+                    >
+                      <i class="ri-book-line"></i>
+                    </div>
+                    <span>Mathematics Goal Completed</span>
+                  </div>
+                  <div class="flex items-center space-x-3" style="margin-top: 20px;">
+                    <div
+                      class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-lg text-green-500"
+                    >
+                      <i class="ri-timer-line"></i>
+                    </div>
+                    <span>Chemistry Goal Completed</span>
+                  </div>
+                <div class="mt-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium"
+                      >Today's Goal Progress</span
+                    >
+                    <span class="text-sm text-gray-500">4.5/6 hours</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-1.5">
+                    <div
+                      class="bg-primary h-1.5 rounded-full"
+                      style="width: 75%"
+                    ></div>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Keep going! You're doing great!
+                  </p>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Physics</h3>
+              </div>
+              <div class="flex items-end space-x-2">
+                <div class="text-3xl font-bold">4.5</div>
+                <div class="text-lg text-gray-500 mb-1">hours</div>
+              </div>
+              <div class="mt-4">
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary" style="width: 75%"></div>
+                </div>
+                <div class="mt-2 text-sm text-gray-500">
+                  75% of daily goal completed
+                </div>
+              </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-semibold">Chemistry</h3>
+                </div>
+                <div class="flex items-end space-x-2">
+                  <div class="text-3xl font-bold">4.5</div>
+                  <div class="text-lg text-gray-500 mb-1">hours</div>
+                </div>
+                <div class="mt-4">
+                  <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary" style="width: 75%"></div>
+                  </div>
+                  <div class="mt-2 text-sm text-gray-500">
+                    75% of daily goal completed
+                  </div>
+                </div>
+              </div>
+              <div class="bg-white p-6 rounded-lg shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-semibold">Mathematics</h3>
+                </div>
+                <div class="flex items-end space-x-2">
+                  <div class="text-3xl font-bold">4.5</div>
+                  <div class="text-lg text-gray-500 mb-1">hours</div>
+                </div>
+                <div class="mt-4">
+                  <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary" style="width: 75%"></div>
+                  </div>
+                  <div class="mt-2 text-sm text-gray-500">
+                    75% of daily goal completed
+                  </div>
+                </div>
+              </div>
+          </div>
+          
+      </main>
+    </div>
+    <script>
+      const mockData = {
+        weeklyStudyTime: {
+          week: {
+            dates: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            hours: [3.5, 4.2, 3.8, 5.0, 4.5, 3.2, 4.5],
+          },
+          month: {
+            dates: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            hours: [25.5, 28.2, 30.8, 27.0],
+          },
+        },
+        subjectDistribution: {
+          current: [
+            { value: 40, name: "Mathematics" },
+            { value: 30, name: "Physics" },
+            { value: 20, name: "Chemistry" },
+            { value: 10, name: "Biology" },
+          ],
+          previous: [
+            { value: 35, name: "Mathematics" },
+            { value: 25, name: "Physics" },
+            { value: 25, name: "Chemistry" },
+            { value: 15, name: "Biology" },
+          ],
+        },
+        dailySubjectTime: {
+          today: [
+            { subject: "Mathematics", hours: 2.5 },
+            { subject: "Physics", hours: 1.8 },
+            { subject: "Chemistry", hours: 1.2 },
+            { subject: "Biology", hours: 0.8 },
+          ],
+          yesterday: [
+            { subject: "Mathematics", hours: 2.0 },
+            { subject: "Physics", hours: 2.2 },
+            { subject: "Chemistry", hours: 1.5 },
+            { subject: "Biology", hours: 1.0 },
+          ],
+        },
+        weeklyProgress: {
+          current: [
+            { date: "Mon", hours: 4.5, target: 5 },
+            { date: "Tue", hours: 5.2, target: 5 },
+            { date: "Wed", hours: 4.8, target: 5 },
+            { date: "Thu", hours: 6.0, target: 5 },
+            { date: "Fri", hours: 5.5, target: 5 },
+            { date: "Sat", hours: 3.2, target: 5 },
+            { date: "Sun", hours: 4.5, target: 5 },
+          ],
+          previous: [
+            { date: "Mon", hours: 4.0, target: 5 },
+            { date: "Tue", hours: 4.8, target: 5 },
+            { date: "Wed", hours: 5.2, target: 5 },
+            { date: "Thu", hours: 4.5, target: 5 },
+            { date: "Fri", hours: 5.0, target: 5 },
+            { date: "Sat", hours: 3.8, target: 5 },
+            { date: "Sun", hours: 4.2, target: 5 },
+          ],
+        },
+      };
+      const charts = {
+        studyTime: echarts.init(document.getElementById("studyTimeChart")),
+        subject: echarts.init(document.getElementById("subjectChart")),
+        dailySubject: echarts.init(document.getElementById("dailySubjectChart")),
+        weeklyProgress: echarts.init(document.getElementById("weeklyProgressChart")),
+      };
+      function updateTimeDistribution(period) {
+        document.querySelectorAll(".time-filter").forEach((btn) => {
+          btn.classList.remove("bg-primary", "text-white");
+          btn.classList.add("bg-gray-100", "text-gray-600");
+        });
+        event.target.classList.remove("bg-gray-100", "text-gray-600");
+        event.target.classList.add("bg-primary", "text-white");
+        const data = mockData.weeklyStudyTime[period];
+        charts.studyTime.setOption({
+          animation: false,
+          grid: {
+            top: 10,
+            right: 10,
+            bottom: 20,
+            left: 40,
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            data: data.dates,
+            axisLine: { lineStyle: { color: "#e5e7eb" } },
+            axisLabel: { color: "#1f2937" },
+          },
+          yAxis: {
+            type: "value",
+            axisLine: { lineStyle: { color: "#e5e7eb" } },
+            axisLabel: { color: "#1f2937" },
+            splitLine: { lineStyle: { color: "#f3f4f6" } },
+          },
+          series: [
+            {
+              data: data.hours,
+              type: "line",
+              smooth: true,
+              symbol: "none",
+              lineStyle: { width: 3 },
+              itemStyle: { color: "rgba(87, 181, 231, 1)" },
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "rgba(87, 181, 231, 0.2)",
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(87, 181, 231, 0.05)",
+                  },
+                ]),
+              },
+            },
+          ],
+        });
+      }
+      function updateSubjectDistribution(period) {
+        document.querySelectorAll(".period-filter").forEach((btn) => {
+          btn.classList.remove("bg-primary", "text-white");
+          btn.classList.add("bg-gray-100", "text-gray-600");
+        });
+        event.target.classList.remove("bg-gray-100", "text-gray-600");
+        event.target.classList.add("bg-primary", "text-white");
+        charts.subject.setOption({
+          animation: false,
+          tooltip: {
+            trigger: "item",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            textStyle: { color: "#1f2937" },
+          },
+          series: [
+            {
+              type: "pie",
+              radius: ["40%", "70%"],
+              itemStyle: {
+                borderRadius: 6,
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+              label: {
+                show: true,
+                position: "outside",
+                formatter: "{b}: {d}%",
+                color: "#1f2937",
+              },
+              data: mockData.subjectDistribution[period],
+              color: [
+                "rgba(87, 181, 231, 1)",
+                "rgba(141, 211, 199, 1)",
+                "rgba(251, 191, 114, 1)",
+                "rgba(252, 141, 98, 1)",
+              ],
+            },
+          ],
+        });
+      }
+      function updateDailySubjectTime(period) {
+        document.querySelectorAll(".daily-filter").forEach((btn) => {
+          btn.classList.remove("bg-primary", "text-white");
+          btn.classList.add("bg-gray-100", "text-gray-600");
+        });
+        event.target.classList.remove("bg-gray-100", "text-gray-600");
+        event.target.classList.add("bg-primary", "text-white");
+        const data = mockData.dailySubjectTime[period];
+        charts.dailySubject.setOption({
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            axisPointer: { type: "shadow" },
+          },
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            data: data.map((item) => item.subject),
+            axisLabel: { interval: 0, rotate: 30 },
+          },
+          yAxis: {
+            type: "value",
+            name: "Hours",
+          },
+          series: [
+            {
+              data: data.map((item) => item.hours),
+              type: "bar",
+              itemStyle: {
+                color: "rgba(87, 181, 231, 1)",
+                borderRadius: [6, 6, 0, 0],
+              },
+            },
+          ],
+        });
+      }
+      function updateWeeklyProgress(period) {
+        document.querySelectorAll(".weekly-filter").forEach((btn) => {
+          btn.classList.remove("bg-primary", "text-white");
+          btn.classList.add("bg-gray-100", "text-gray-600");
+        });
+        event.target.classList.remove("bg-gray-100", "text-gray-600");
+        event.target.classList.add("bg-primary", "text-white");
+        const data = mockData.weeklyProgress[period];
+        charts.weeklyProgress.setOption({
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            axisPointer: { type: "cross" },
+          },
+          grid: {
+            top: 10,
+            right: 10,
+            bottom: 20,
+            left: 40,
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            data: data.map((item) => item.date),
+          },
+          yAxis: {
+            type: "value",
+            name: "Hours",
+          },
+          series: [
+            {
+              name: "Actual",
+              type: "line",
+              data: data.map((item) => item.hours),
+              itemStyle: { color: "rgba(87, 181, 231, 1)" },
+            },
+            {
+              name: "Target",
+              type: "line",
+              data: data.map((item) => item.target),
+              itemStyle: { color: "rgba(251, 191, 114, 1)" },
+              lineStyle: { type: "dashed" },
+            },
+          ],
+        });
+      }
+      // Initialize all charts
+      updateTimeDistribution("week");
+      updateSubjectDistribution("current");
+      updateDailySubjectTime("today");
+      updateWeeklyProgress("current");
+      window.addEventListener("resize", () => {
+        Object.values(charts).forEach((chart) => chart.resize());
+      });
+    </script>
+  </body>
+</html>
