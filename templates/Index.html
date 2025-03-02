@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#6366f1",
+              secondary: "#8b5cf6",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body { font-family: 'Inter', sans-serif; }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <h1 class="font-['Pacifico'] text-2xl text-primary">StudyXP</h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              onclick="showLoginModal()"
+              class="px-6 py-2 text-primary hover:text-primary/90 font-medium !rounded-button whitespace-nowrap"
+            >
+              Log in <a href="./Dashboard.html"></a>
+            </button>
+            <button
+              onclick="showSignupModal()"
+              class="px-6 py-2 bg-primary hover:bg-primary/90 text-white font-medium !rounded-button whitespace-nowrap"
+            >
+              Sign up <a hrref="./Dashboard.html"></a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <div class="relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+            <div
+              class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left"
+            >
+              <h1
+                class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl"
+              >
+                <span class="block">Transform your</span>
+                <span class="block text-primary">learning journey</span>
+              </h1>
+              <p
+                class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl"
+              >
+                Embark on a personalized learning adventure with our innovative
+                platform. Track your progress, earn rewards, and achieve your
+                educational goals with our comprehensive study tools and
+                analytics.
+              </p>
+              <div
+                class="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left"
+              >
+                <p class="text-base font-medium text-gray-900">
+                  Join thousands of successful learners today.
+                </p>
+                <div class="mt-8 space-y-4 sm:space-y-0 sm:flex sm:space-x-4">
+                  <button
+                    onclick="showSignupModal()"
+                    class="w-full sm:w-auto flex items-center justify-center px-8 py-3 bg-primary hover:bg-primary/90 text-white font-medium !rounded-button whitespace-nowrap"
+                  >
+                    Get started
+                    <div class="w-5 h-5 ml-2 flex items-center justify-center">
+                      <i class="ri-arrow-right-line"></i>
+                    </div>
+                  </button>
+                  <button
+                    onclick="showDemoModal()"
+                    class="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-gray-300 hover:border-gray-400 text-gray-700 font-medium !rounded-button whitespace-nowrap"
+                  >
+                    Watch demo
+                    <div class="w-5 h-5 ml-2 flex items-center justify-center">
+                      <i class="ri-play-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center"
+            >
+              <img
+                src="https://public.readdy.ai/ai/img_res/f2a870880e623a83391d4aba51cdac17.jpg"
+                alt="Learning Platform"
+                class="w-full rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              Why choose our platform?
+            </h2>
+            <p class="mt-4 text-lg text-gray-500">
+              Experience the future of learning with our innovative features
+            </p>
+          </div>
+
+          <div class="mt-20">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div class="pt-6">
+                <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                  <div class="-mt-6">
+                    <div>
+                      <span
+                        class="inline-flex items-center justify-center p-3 bg-primary rounded-lg shadow-lg"
+                      >
+                        <div
+                          class="w-6 h-6 flex items-center justify-center text-white"
+                        >
+                          <i class="ri-line-chart-line"></i>
+                        </div>
+                      </span>
+                    </div>
+                    <h3 class="mt-8 text-lg font-medium text-gray-900">
+                      Progress Tracking
+                    </h3>
+                    <p class="mt-5 text-base text-gray-500">
+                      Monitor your learning journey with detailed analytics and
+                      insights.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-6">
+                <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                  <div class="-mt-6">
+                    <div>
+                      <span
+                        class="inline-flex items-center justify-center p-3 bg-primary rounded-lg shadow-lg"
+                      >
+                        <div
+                          class="w-6 h-6 flex items-center justify-center text-white"
+                        >
+                          <i class="ri-trophy-line"></i>
+                        </div>
+                      </span>
+                    </div>
+                    <h3 class="mt-8 text-lg font-medium text-gray-900">
+                      Rewards System
+                    </h3>
+                    <p class="mt-5 text-base text-gray-500">
+                      Earn badges and rewards as you achieve your learning
+                      goals.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-6">
+                <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                  <div class="-mt-6">
+                    <div>
+                      <span
+                        class="inline-flex items-center justify-center p-3 bg-primary rounded-lg shadow-lg"
+                      >
+                        <div
+                          class="w-6 h-6 flex items-center justify-center text-white"
+                        >
+                          <i class="ri-calendar-line"></i>
+                        </div>
+                      </span>
+                    </div>
+                    <h3 class="mt-8 text-lg font-medium text-gray-900">
+                      Smart Scheduling
+                    </h3>
+                    <p class="mt-5 text-base text-gray-500">
+                      Organize your study time effectively with our intelligent
+                      scheduler.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="loginModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">
+              Log in to your account
+            </h2>
+            <button
+              onclick="hideLoginModal()"
+              class="text-gray-400 hover:text-gray-500"
+            >
+              <div class="w-6 h-6 flex items-center justify-center">
+                <i class="ri-close-line"></i>
+              </div>
+            </button>
+          </div>
+          <form id="loginModal-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="login-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="login-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required />
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input type="checkbox" id="remember-me" class="h-4 w-4 text-primary border-gray-300 rounded" />
+                    <label class="ml-2 block text-sm text-gray-700">Remember me</label>
+                </div>
+                <a href="#" class="text-sm font-medium text-primary hover:text-primary/90">Forgot password?</a>
+            </div>
+            <button type="submit" class="w-full py-2 px-4 bg-primary hover:bg-primary/90 text-white font-medium !rounded-button">
+                Log in
+            </button>
+        </form>
+        
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="signupModal"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden"
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">
+              Create your account
+            </h2>
+            <button
+              onclick="hideSignupModal()"
+              class="text-gray-400 hover:text-gray-500"
+            >
+              <div class="w-6 h-6 flex items-center justify-center">
+                <i class="ri-close-line"></i>
+              </div>
+            </button>
+          </div>
+          <form id="signupModal-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" id="signup-username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="signup-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="signup-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required />
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" id="signup-agree" class="h-4 w-4 text-primary border-gray-300 rounded" required />
+                <label class="ml-2 block text-sm text-gray-700">
+                    I agree to the <a href="#" class="text-primary hover:text-primary/90">Terms</a> and
+                    <a href="#" class="text-primary hover:text-primary/90">Privacy Policy</a>
+                </label>
+            </div>
+            <button type="submit" class="w-full py-2 px-4 bg-primary hover:bg-primary/90 text-white font-medium !rounded-button">
+                Sign up
+            </button>
+        </form>
+        
+        </div>
+      </div>
+    </div>
+
+    <div id="demoModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-3xl">
+          <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-xl font-semibold text-gray-900">Platform Demo</h2>
+            <button
+              onclick="hideDemoModal()"
+              class="text-gray-400 hover:text-gray-500"
+            >
+              <div class="w-6 h-6 flex items-center justify-center">
+                <i class="ri-close-line"></i>
+              </div>
+            </button>
+          </div>
+          <div class="aspect-w-16 aspect-h-9">
+            <img
+              src="https://public.readdy.ai/ai/img_res/50bcb56ac588755a72fa5ececf1d593d.jpg"
+              alt="Platform Demo"
+              class="w-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+  document.querySelector("#loginModal-form").addEventListener("submit", async function (e) {
+    event.preventDefault();
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value.trim();
+
+    if (!email || !password) {
+        alert("Email and password are required.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            window.location.href = "/dashboard"; // Redirect after success
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Login Error:", error);
+        alert("An error occurred. Please try again.");
+    }
+});
+
+
+  document.querySelector("#signupModal-form").addEventListener("submit", async function (e) {
+    event.preventDefault();
+
+    const username = document.getElementById("signup-username").value.trim();
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value.trim();
+    const agree = document.getElementById("signup-agree").checked;
+
+    if (!username || !email || !password || !agree) {
+        alert("All fields are required and you must agree to the terms.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            window.location.href = "/dashboard"; // Redirect after success
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Signup Error:", error);
+        alert("An error occurred. Please try again.");
+    }
+});
+
+
+
+
+  function hideSignupModal() {
+    document.getElementById("signupModal").classList.add("hidden");
+  }
+
+      function showLoginModal() {
+        document.getElementById("loginModal").classList.remove("hidden");
+      }
+
+      function hideLoginModal() {
+        document.getElementById("loginModal").classList.add("hidden");
+      }
+      function showSignupModal() {
+        document.getElementById("signupModal").classList.remove("hidden");
+      }
+
+      function showDemoModal() {
+        document.getElementById("demoModal").classList.remove("hidden");
+      }
+
+      function hideDemoModal() {
+        document.getElementById("demoModal").classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>

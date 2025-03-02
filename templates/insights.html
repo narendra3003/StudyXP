@@ -53,15 +53,14 @@
   <body class="bg-gray-50">
     <div class="flex h-screen">
       <aside class="w-64 bg-white shadow-lg flex flex-col">
-        <a href="Dashboard.html">
+        <a href="/dashboard">
             <div class="p-6">
-              <h1 class="font-['Pacifico'] text-2xl text-primary">logo</h1>
+              <h1 class="font-['Pacifico'] text-2xl text-primary">StudyXP</h1>
             </div>
             </a>
         <nav class="flex-1 px-4">
           <div class="space-y-2">
-            <a
-              href="Dashboard.html"
+            <a href="/dashboard"
               class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -69,8 +68,7 @@
               </div>
               <span class="ml-3">Dashboard</span>
             </a>
-            <a
-              href="insight.html"
+            <a href="/insights"
               class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -78,8 +76,7 @@
               </div>
               <span class="ml-3">Insights</span>
             </a>
-            <a
-              href="Rewards.html"
+            <a href="/rewards"
               class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -89,39 +86,55 @@
             </a>
           </div>
         </nav>
-        <div class="p-4">
-          <div class="bg-gray-100 p-4 rounded-lg">
-            <div class="flex items-center">
-              <img
-                src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
-                class="w-10 h-10 rounded-full object-cover"
-                alt="Profile"
-              />
-              <div class="ml-3">
-                <p class="text-sm font-medium">Sanchita Warade</p>
-                <p class="text-xs text-gray-500">100 XP</p>
-              </div>
+        
+    <button onclick="toggleMockTestModal()" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Log Mock Test</button>
+
+    <div id="mockTestModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg w-[480px] p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">Log Mock Test Marks</h3>
+                <button onclick="toggleMockTestModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
             </div>
-          </div>
+            <form id="mockTestForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                    <div class="relative">
+                        <select id="mockSubjectSelect" class="w-full pl-3 pr-10 py-2 text-sm border rounded-lg appearance-none">
+                            <option value="mathematics">Mathematics</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="biology">Biology</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <i class="ri-arrow-down-s-line text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mock Test Score</label>
+                    <input type="number" id="mockTestScore" min="0" max="100" step="1" class="w-full px-3 py-2 text-sm border rounded-lg" placeholder="Enter obtained marks" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Total Marks</label>
+                    <input type="number" id="mockTotalMarks" min="1" step="1" class="w-full px-3 py-2 text-sm border rounded-lg" placeholder="Enter total marks" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Time Taken (minutes)</label>
+                    <input type="number" id="mockTimeTaken" min="1" step="1" class="w-full px-3 py-2 text-sm border rounded-lg" placeholder="Enter time taken" />
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Log Test</button>
+                </div>
+            </form>
         </div>
+    </div>
       </aside>
       <main class="flex-1 overflow-y-auto">
         <header class="bg-white shadow-sm">
           <div class="flex items-center justify-between px-8 py-4">
-            <div class="flex items-center space-x-4">
-              <div class="relative">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  class="pl-10 pr-4 py-2 border rounded-lg text-sm w-64"
-                />
-                <div
-                  class="absolute left-3 top-2.5 w-4 h-4 flex items-center justify-center text-gray-400"
-                >
-                  <i class="ri-search-line"></i>
-                </div>
-              </div>
-            </div>
+
             <div class="flex items-center space-x-4">
               <button
                 class="relative w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full"
@@ -131,61 +144,56 @@
                   class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"
                 ></span>
               </button>
-              <div class="flex items-center space-x-2">
-                <img
-                  src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
-                  class="w-8 h-8 rounded-full object-cover"
-                  alt="Profile"
-                />
-                <span class="text-sm font-medium">Sanchita Warade</span>
-              </div>
-            </div>
-          </div>
         </header>
+        <div class="p-8">
+          
         <div class="p-8">
           <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-lg shadow-sm">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">Today's Progress</h3>
-                <span class="text-sm text-gray-500">March 1, 2025</span>
+                  <h3 class="text-lg font-semibold">Today's Progress</h3>
+                  <span class="text-sm text-gray-500">{{ current_date }}</span>
               </div>
               <div class="flex items-end space-x-2">
-                <div class="text-3xl font-bold">4.5</div>
-                <div class="text-lg text-gray-500 mb-1">hours</div>
+                  <div class="text-3xl font-bold">{{ total_hours }}</div>
+                  <div class="text-lg text-gray-500 mb-1">hours</div>
               </div>
               <div class="mt-4">
-                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div class="h-full bg-primary" style="width: 75%"></div>
-                </div>
-                <div class="mt-2 text-sm text-gray-500">
-                  75% of daily goal completed
-                </div>
+                  <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-primary" style=`width: {{goal_percentage | int}} %`></div>
+                  </div>
+                  <div class="mt-2 text-sm text-gray-500">
+                      {{ goal_percentage }}% of daily goal completed
+                  </div>
               </div>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-              <div class="flex items-center justify-between mb-4">
+          </div>
+          
+
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">Current Streak</h3>
-                <div
-                  class="w-8 h-8 flex items-center justify-center text-primary"
-                >
-                  <i class="ri-fire-line ri-xl"></i>
+                <div class="w-8 h-8 flex items-center justify-center text-primary">
+                    <i class="ri-fire-line ri-xl"></i>
                 </div>
-              </div>
-              <div class="flex items-end space-x-2">
-                <div class="text-3xl font-bold">12</div>
-                <div class="text-lg text-gray-500 mb-1">days</div>
-              </div>
-              <div class="mt-4 flex space-x-2">
-                <div class="flex-1 h-1 bg-primary rounded-full"></div>
-                <div class="flex-1 h-1 bg-primary rounded-full"></div>
-                <div class="flex-1 h-1 bg-primary rounded-full"></div>
-                <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
-                <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
-              </div>
-              <div class="mt-2 text-sm text-gray-500">
-                3 days until next milestone
-              </div>
             </div>
+            <div class="flex items-end space-x-2">
+                <div class="text-3xl font-bold">{{ current_streak }}</div>
+                <div class="text-lg text-gray-500 mb-1">days</div>
+            </div>
+            <div class="mt-4 flex space-x-2">
+                {% for i in range(current_streak) %}
+                    <div class="flex-1 h-1 bg-primary rounded-full"></div>
+                {% endfor %}
+                {% for i in range(5 - current_streak) %}
+                    <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
+                {% endfor %}
+            </div>
+            <div class="mt-2 text-sm text-gray-500">
+                {{ days_to_milestone }} days until next milestone
+            </div>
+        </div>
+        
+
             <div class="bg-white p-6 rounded-lg shadow-sm">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">XP Progress</h3>
@@ -196,17 +204,18 @@
                 </div>
               </div>
               <div class="flex items-end space-x-2">
-                <div class="text-3xl font-bold">2,450</div>
+                <div class="text-3xl font-bold">{{total_xp }}</div>
                 <div class="text-lg text-gray-500 mb-1">XP</div>
               </div>
               <div class="mt-4">
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div class="h-full bg-yellow-500" style="width: 80%"></div>
                 </div>
-                <div class="mt-2 text-sm text-gray-500">550 XP to Level 13</div>
+                <div class="mt-2 text-sm text-gray-500">550 XP</div>
               </div>
             </div>
           </div>
+
           <div class="grid grid-cols-2 gap-6">
             <div class="bg-white p-6 rounded-lg shadow-sm">
               <div class="flex items-center justify-between mb-6">
@@ -606,127 +615,39 @@
         Object.values(charts).forEach((chart) => chart.resize());
       });
     </script>
-    <!-- Study Log Page -->
-    <div
-      id="studyLogModal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center"
-    >
-      <div class="bg-white rounded-lg w-[480px] p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-xl font-semibold">Log Study Session</h3>
-          <button
-            onclick="toggleStudyLogModal()"
-            class="text-gray-400 hover:text-gray-600"
-          >
-            <i class="ri-close-line ri-lg"></i>
-          </button>
-        </div>
-        <form id="studyLogForm" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Subject</label
-            >
-            <div class="relative">
-              <select
-                id="subjectSelect"
-                class="w-full pl-3 pr-10 py-2 text-sm border rounded-lg appearance-none"
-              >
-                <option value="mathematics">Mathematics</option>
-                <option value="physics">Physics</option>
-                <option value="chemistry">Chemistry</option>
-                <option value="biology">Biology</option>
-              </select>
-              <div
-                class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
-              >
-                <i class="ri-arrow-down-s-line text-gray-400"></i>
-              </div>
-            </div>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Study Duration (hours)</label
-            >
-            <input
-              type="number"
-              id="studyDuration"
-              min="0.5"
-              max="12"
-              step="0.5"
-              class="w-full px-3 py-2 text-sm border rounded-lg"
-              placeholder="Enter hours"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Notes (optional)</label
-            >
-            <textarea
-              id="studyNotes"
-              class="w-full px-3 py-2 text-sm border rounded-lg"
-              rows="3"
-              placeholder="Add any notes about your study session"
-            ></textarea>
-          </div>
-          <div class="flex justify-end space-x-3 mt-6">
-            <button
-              type="button"
-              onclick="toggleStudyLogModal()"
-              class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border rounded-button"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="px-4 py-2 text-sm text-white bg-primary hover:bg-primary/90 rounded-button"
-            >
-              Save Session
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <button
-      onclick="toggleStudyLogModal()"
-      class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90"
-    >
-      <i class="ri-add-line ri-xl"></i>
-    </button>
     <script>
-      function toggleStudyLogModal() {
-        const modal = document.getElementById("studyLogModal");
-        if (modal.classList.contains("hidden")) {
-          modal.classList.remove("hidden");
-          modal.classList.add("flex");
-        } else {
-          modal.classList.add("hidden");
-          modal.classList.remove("flex");
-        }
+      function toggleMockTestModal() {
+          const modal = document.getElementById("mockTestModal");
+          modal.classList.toggle("hidden");
+          modal.classList.toggle("flex");
       }
-      document
-        .getElementById("studyLogForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const subject = document.getElementById("subjectSelect").value;
-          const duration = document.getElementById("studyDuration").value;
-          const notes = document.getElementById("studyNotes").value;
-          // Here you would typically send this data to your backend
-          console.log("Logged study session:", { subject, duration, notes });
-          // Show success message
-          const successToast = document.createElement("div");
-          successToast.className =
-            "fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg";
-          successToast.textContent = "Study session logged successfully!";
-          document.body.appendChild(successToast);
-          // Remove toast after 3 seconds
-          setTimeout(() => {
-            successToast.remove();
-          }, 3000);
-          // Close modal
-          toggleStudyLogModal();
-          // Reset form
-          this.reset();
-        });
+
+      document.getElementById("mockTestForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const subject = document.getElementById("mockSubjectSelect").value;
+    const score = document.getElementById("mockTestScore").value;
+    const totalMarks = document.getElementById("mockTotalMarks").value;
+    const timeTaken = document.getElementById("mockTimeTaken").value;
+
+    const requestData = { subject, score, totalMarks, timeTaken };
+
+    console.log("Sending Data:", requestData);  
+
+    fetch("/log_mock_test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Server Response:", data);
+        alert(data.message);
+    })
+    .catch(error => console.error("Fetch Error:", error));
+});
+
     </script>
   </body>
 </html>
+

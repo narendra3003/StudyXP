@@ -53,15 +53,14 @@
   <body class="bg-gray-50">
     <div class="flex h-screen">
       <aside class="w-64 bg-white shadow-lg flex flex-col">
-        <a href="Dashboard.html">
+        <a href="{{ url_for('dashboard') }}">
         <div class="p-6">
-          <h1 class="font-['Pacifico'] text-2xl text-primary">logo</h1>
+          <h1 class="font-['Pacifico'] text-2xl text-primary">StudyXP</h1>
         </div>
     </a>
         <nav class="flex-1 px-4">
           <div class="space-y-2">
-            <a
-              href="dashboard.html"
+            <a href="{{ url_for('dashboard') }}"
               class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -69,8 +68,7 @@
               </div>
               <span class="ml-3">Dashboard</span>
             </a>
-            <a
-              href="insight.html"
+            <a href="{{ url_for('insights') }}"
               class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -78,8 +76,7 @@
               </div>
               <span class="ml-3">Insights</span>
             </a>
-            <a
-              href="Rewards.html"
+            <a href="{{ url_for('rewards') }}"
               class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -89,21 +86,7 @@
             </a>
           </div>
         </nav>
-        <div class="p-4">
-          <div class="bg-gray-100 p-4 rounded-lg">
-            <div class="flex items-center">
-              <img
-                src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
-                class="w-10 h-10 rounded-full object-cover"
-                alt="Profile"
-              />
-              <div class="ml-3">
-                <p class="text-sm font-medium">Sanchita Warade</p>
-                <p class="text-xs text-gray-500">100 XP</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </aside>
       <main class="flex-1 overflow-y-auto bg-gray-50">
         <header class="bg-white shadow-sm">
@@ -217,15 +200,15 @@
             </div>
             <div class="col-span-4" style="height: auto;">
               <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
-                <h2 class="text-lg font-semibold mb-4">Notification</h2>
-                <div class="flex items-center space-x-3">
+                <h2 class="text-lg font-semibold mb-4">⭐ AI Recomendation</h2>
+                <!-- <div class="flex items-center space-x-3">
                     <div
                       class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-lg text-blue-500"
                     >
                       <i class="ri-book-line"></i>
                     </div>
                     <span>Mathematics Goal Completed</span>
-                  </div>
+                </div>
                   <div class="flex items-center space-x-3" style="margin-top: 20px;">
                     <div
                       class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-lg text-green-500"
@@ -233,7 +216,12 @@
                       <i class="ri-timer-line"></i>
                     </div>
                     <span>Chemistry Goal Completed</span>
-                  </div>
+                  </div> -->
+                  <pre id="ai-answer-pre" style=" white-space: pre-wrap;  font-family: inter;">
+                     {{AI_text}}
+                  </pre>
+
+
                 <div class="mt-6">
                   <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-medium"
@@ -256,58 +244,27 @@
             </div>
           </div>
           <div class="grid grid-cols-3 gap-6 mb-8">
+            {% for subject in subjects %}
             <div class="bg-white p-6 rounded-lg shadow-sm">
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">Physics</h3>
-              </div>
-              <div class="flex items-end space-x-2">
-                <div class="text-3xl font-bold">4.5</div>
-                <div class="text-lg text-gray-500 mb-1">hours</div>
-              </div>
-              <div class="mt-4">
-                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div class="h-full bg-primary" style="width: 75%"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">{{ subject.name }}</h3>
                 </div>
-                <div class="mt-2 text-sm text-gray-500">
-                  75% of daily goal completed
+                <div class="flex items-end space-x-2">
+                    <div class="text-3xl font-bold">{{ subject.hours//60 }}</div>
+                    <div class="text-lg text-gray-500 mb-1">hours</div>
                 </div>
-              </div>
+                <div class="mt-4">
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary" style=`width: {{ subject.percentage }}%`></div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-500">
+                        {{ subject.percentage }}% of daily goal completed
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                  <h3 class="text-lg font-semibold">Chemistry</h3>
-                </div>
-                <div class="flex items-end space-x-2">
-                  <div class="text-3xl font-bold">4.5</div>
-                  <div class="text-lg text-gray-500 mb-1">hours</div>
-                </div>
-                <div class="mt-4">
-                  <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary" style="width: 75%"></div>
-                  </div>
-                  <div class="mt-2 text-sm text-gray-500">
-                    75% of daily goal completed
-                  </div>
-                </div>
-              </div>
-              <div class="bg-white p-6 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                  <h3 class="text-lg font-semibold">Mathematics</h3>
-                </div>
-                <div class="flex items-end space-x-2">
-                  <div class="text-3xl font-bold">4.5</div>
-                  <div class="text-lg text-gray-500 mb-1">hours</div>
-                </div>
-                <div class="mt-4">
-                  <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary" style="width: 75%"></div>
-                  </div>
-                  <div class="mt-2 text-sm text-gray-500">
-                    75% of daily goal completed
-                  </div>
-                </div>
-              </div>
-          </div>
+            {% endfor %}
+        </div>
+        </div>        
           
       </main>
     </div>
