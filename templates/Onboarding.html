@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Journey</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script defer src="script.js"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 py-12 px-4">
+<div class="max-w-4xl mx-auto">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 mb-4">
+      Welcome to Your Learning Journey! 🚀
+    </h1>
+    <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
+      <div id="progress-bar" class="h-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all duration-500" style="width: 0;"></div>
+    </div>
+  </div>
+
+  <div class="card mb-8">
+    <div class="p-6">
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" class="input mt-2" placeholder="Enter your first name">
+        </div>
+        <div>
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" class="input mt-2" placeholder="Enter your last name">
+        </div>
+      </div>
+      <div class="mt-6">
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="text" class="input mt-2" placeholder="Enter your phone number">
+      </div>
+    </div>
+  </div>
+
+  <div id="subjects-container"></div>
+
+  <div class="flex justify-between items-center mt-8">
+    <button id="add-subject-btn" class="btn bg-gradient-to-r from-purple-500 to-blue-500 text-white">Add Subject</button>
+    <button id="save-btn" class="btn bg-gradient-to-r from-green-500 to-teal-500 text-white" disabled>Save & Continue</button>
+  </div>
+
+  <div id="success-dialog" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded shadow-lg text-center">
+      <h2 class="text-2xl text-green-500 mb-2">Success!</h2>
+      <p class="text-gray-600 mb-2">Your learning plan has been saved!</p>
+      <p class="text-gray-600">Redirecting to dashboard...</p>
+    </div>
+  </div>
+</div>
+<style>
+    .input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+</style>
+<script>
+    let firstName = '';
+let lastName = '';
+let phone = '';
+let subjects = [];
+let progress = 0;
+
+const progressBar = document.getElementById('progress-bar');
+const saveBtn = document.getElementById('save-btn');
+const subjectsContainer = document.getElementById('subjects-container');
+const successDialog = document.getElementById('success-dialog');
+
+document.getElementById('firstName').addEventListener('input', (e) => {
+  firstName = e.target.value;
+  updateProgress();
+});
+
+document.getElementById('lastName').addEventListener('input', (e) => {
+  lastName = e.target.value;
+  updateProgress();
+});
+
+document.getElementById('phone').addEventListener('input', (e) => {
+  phone = e.target.value;
+  updateProgress();
+});
+
+document.getElementById('add-subject-btn').addEventListener('click', () => {
+  const newSubject = {
+    id: subjects.length + 1,
+    name: '',
+    timeGoal: 30,
+  };
+  subjects.push(newSubject);
+  renderSubjects();
+  updateProgress();
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  successDialog.classList.remove('hidden');
+  setTimeout(() => {
+    window.location.href = '/dashboard';
+  }, 2000);
+});
+
+function renderSubjects() {
+  subjectsContainer.innerHTML = '';
+  subjects.forEach((subject, index) => {
+    const subjectCard = document.createElement('div');
+    subjectCard.className = 'card mb-6 p-6';
+
+    subjectCard.innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label>Subject Name</label>
+          <input type="text" class="input mt-2" placeholder="Enter subject name" value="${subject.name}">
+        </div>
+        <div>
+          <label>Daily Time Goal (minutes)</label>
+          <input type="range" min="0" max="180" step="15" value="${subject.timeGoal}">
+          <span>${subject.timeGoal} min</span>
+        </div>
+      </div>
+    `;
+
+    const nameInput = subjectCard.querySelector('input[type="text"]');
+    const timeInput = subjectCard.querySelector('input[type="range"]');
+    const timeLabel = subjectCard.querySelector('span');
+
+    nameInput.addEventListener('input', (e) => {
+      subjects[index].name = e.target.value;
+      updateProgress();
+    });
+
+    timeInput.addEventListener('input', (e) => {
+      subjects[index].timeGoal = e.target.value;
+      timeLabel.textContent = `${e.target.value} min`;
+      updateProgress();
+    });
+
+    subjectsContainer.appendChild(subjectCard);
+  });
+}
+
+function updateProgress() {
+  let total = 0;
+  if (firstName) total += 20;
+  if (lastName) total += 20;
+  if (phone) total += 20;
+  if (subjects.length > 0) total += 20;
+  if (subjects.some((s) => s.timeGoal > 0)) total += 20;
+
+  progress = total;
+  progressBar.style.width = `${progress}%`;
+  saveBtn.disabled = progress < 100;
+}
+</script>
+</body>
+
+</html>

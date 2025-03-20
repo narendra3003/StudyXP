@@ -12,7 +12,6 @@ class User:
 
 
     def to_dict(self):
-        """Returns user data as a dictionary."""
         return {
             "user_id": self.user_id,
             "username": self.username,
@@ -24,7 +23,6 @@ class User:
 
 
 class StudySession:
-    """Represents a study session log."""
     
     def __init__(self, user_id, subject_id, date, study_time, notes=""):
         self.user_id = user_id
@@ -34,7 +32,6 @@ class StudySession:
         self.notes = notes
 
     def to_dict(self):
-        """Returns study session data as a dictionary."""
         return {
             "user_id": self.user_id,
             "subject_id": self.subject_id,
@@ -45,7 +42,6 @@ class StudySession:
 
 
 class MockTest:
-    """Represents a mock test record."""
     
     def __init__(self, user_id, subject_id, date, score, total_marks, time_taken):
         self.user_id = user_id
@@ -56,7 +52,6 @@ class MockTest:
         self.time_taken = time_taken
 
     def to_dict(self):
-        """Returns mock test data as a dictionary."""
         return {
             "user_id": self.user_id,
             "subject_id": self.subject_id,

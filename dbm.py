@@ -10,6 +10,15 @@ def connect():
         database="study_logger"
     )
 
+def connect2():
+    return p.connect(
+        host="localhost",
+        user="root",
+        password="oracle",
+        database="study_logger",
+        cursorclass=DictCursor
+    )
+
 
 def insert_user(user_data):
     con = connect()
@@ -28,10 +37,10 @@ def get_all_users():
     con.close()
     return data
 
-def get_user_by_email(email):
+def get_user_by_id(email):
     con = connect()
     cur = con.cursor()
-    sql = "SELECT * FROM users WHERE email=%s"
+    sql = "SELECT * FROM users WHERE user_id=%s"
     cur.execute(sql, (email,))
     data = cur.fetchone()
     con.close()
@@ -246,7 +255,6 @@ def delete_xp_reward(xp_id):
     con.close()
 
 
-# Fetch subject ID for a given subject name and user ID
 def get_subject_id(user_id, subject_name):
     try:
         db = connect()
@@ -259,14 +267,13 @@ def get_subject_id(user_id, subject_name):
         db.close()
 
         if result:
-            return result[0]  # Return subject_id
+            return result[0]  
         else:
-            return None  # Subject not found
+            return None  
     except Exception as e:
         print("Error fetching subject ID:", str(e))
         return None
 
-# Insert study log into the database
 def insert_study_log(user_id, subject_id, duration):
     try:
         db = connect()
@@ -291,14 +298,13 @@ def get_today_progress(user_id):
     db = connect()
     cursor = db.cursor()
 
-    # Fetch total study time for today
     cursor.execute("""
         SELECT IFNULL(SUM(study_time), 0) FROM study_logs 
         WHERE user_id = %s AND date = %s
     """, (user_id, dt.date.today()))
     total_minutes = cursor.fetchone()[0]
 
-    # Fetch user's daily goal
+    
     cursor.execute("""
         SELECT IFNULL(SUM(daily_goal_minutes), 60) FROM subjects 
         WHERE user_id = %s
@@ -307,7 +313,7 @@ def get_today_progress(user_id):
 
     db.close()
 
-    # Convert minutes to hours and calculate percentage
+    
     total_hours = round(total_minutes / 60, 1)
     goal_percentage = min(int((total_minutes / daily_goal) * 100), 100)
 
@@ -319,7 +325,7 @@ def get_current_streak(user_id):
     db = connect()
     cursor = db.cursor()
 
-    # Fetch the last 7 days of study logs
+    
     cursor.execute("""
         SELECT DISTINCT date FROM study_logs 
         WHERE user_id = %s AND date >= %s 
@@ -329,7 +335,7 @@ def get_current_streak(user_id):
     study_dates = [row[0] for row in cursor.fetchall()]
     db.close()
 
-    # Calculate the streak
+    
     streak = 0
     today = dt.date.today()
 
@@ -337,7 +343,7 @@ def get_current_streak(user_id):
         streak += 1
         today -= dt.timedelta(days=1)
 
-    # Next milestone (e.g., 15 days streak goal)
+    
     next_milestone = 15
     days_to_milestone = max(0, next_milestone - streak)
 
@@ -359,7 +365,7 @@ def get_study_time_distribution(user_id, period="month"):
     db = connect()
     cursor = db.cursor(cursor=p.cursors.DictCursor)
 
-    # Query to get total study time for each day/week/month
+    
     if period == "week":
         cursor.execute("""
             SELECT DATE(date) AS study_date, SUM(study_time) AS total_time 
@@ -367,7 +373,7 @@ def get_study_time_distribution(user_id, period="month"):
             WHERE user_id = %s AND date >= NOW() - INTERVAL 7 DAY 
             GROUP BY study_date ORDER BY study_date
         """, (user_id,))
-    else:  # Default: Month
+    else:  
         cursor.execute("""
             SELECT DATE(date) AS study_date, SUM(study_time) AS total_time 
             FROM study_logs 
@@ -413,7 +419,7 @@ def get_study_progress(user_id):
     db = connect()
     cursor = db.cursor()
 
-    # Fetch total study time for each subject
+    
     cursor.execute("""
         SELECT s.name, COALESCE(SUM(l.study_time), 0) 
         FROM subjects s 
@@ -467,8 +473,7 @@ def getStudyHoursPerDay(user_id):
     data = cursor.fetchall()
     db.close()
 
-    # Convert to dictionary {date: study_hours}
-    study_hours = {str(row[0]): row[1] / 60 for row in data}  # Convert minutes to hours
+    study_hours = {str(row[0]): row[1] / 60 for row in data}  
     return study_hours
 
 
@@ -489,7 +494,6 @@ def mock_test_scores(user_id):
     data = cursor.fetchall()
     db.close()
 
-    # Convert to list of {date, score, total_marks}
     scores = [{"date": str(row[0]), "score": row[1], "total_marks": row[2]} for row in data]
     return scores
 
@@ -498,7 +502,6 @@ def log_mock_test(user_id, subject_name, score, total_marks, time_taken):
         db = connect()
         cursor = db.cursor()
 
-        # Get subject_id
         cursor.execute("SELECT subject_id FROM subjects WHERE name = %s AND user_id = %s", (subject_name, user_id))
         result = cursor.fetchone()
 
@@ -507,7 +510,6 @@ def log_mock_test(user_id, subject_name, score, total_marks, time_taken):
 
         subject_id = result[0]
 
-        # Insert into mock_tests
         cursor.execute("""
             INSERT INTO mock_tests (user_id, subject_id, date, score, total_marks, time_taken) 
             VALUES (%s, %s, CURDATE(), %s, %s, %s)
@@ -516,7 +518,7 @@ def log_mock_test(user_id, subject_name, score, total_marks, time_taken):
         db.commit()
         return True, "Mock test logged successfully!"
     except Exception as e:
-        print("Database Error:", str(e))  # Print full error in console
+        print("Database Error:", str(e))  
         return False, f"Database error: {str(e)}"
     finally:
         cursor.close()
@@ -548,11 +550,10 @@ def get_study_logs_last_7_days(user_id):
         db = connect()
         cursor = db.cursor()
 
-        # Get date range (last 7 days)
         today = datetime.date.today()
         start_date = today - datetime.timedelta(days=6)
 
-        # Fetch summed study time per subject for the last 7 days
+        
         query = """
         SELECT s.name AS subject, sl.date, SUM(sl.study_time) AS total_study_time
         FROM study_logs sl
@@ -564,7 +565,6 @@ def get_study_logs_last_7_days(user_id):
         cursor.execute(query, (user_id, start_date, today))
         results = cursor.fetchall()
 
-        # Format data into dictionary
         data = {}
         for subject, date, total_study_time in results:
             date_str = str(date)
@@ -576,6 +576,52 @@ def get_study_logs_last_7_days(user_id):
     except Exception as e:
         print("Database Error:", e)
         return {}
+    finally:
+        cursor.close()
+        db.close()
+
+
+def user_exists(email):
+    with connect2() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT user_id FROM users WHERE email = %s", (email,))
+            return cursor.fetchone() is not None
+
+def create_user(username, email, password_hash):
+    with connect2() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
+                (username, email, password_hash)
+            )
+            conn.commit()
+            return cursor.lastrowid
+
+def get_user_by_email(email):
+    with connect2() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT user_id, username, email, password_hash FROM users WHERE email = %s", (email,))
+            return cursor.fetchone()
+        
+import pymysql
+
+def is_onboarded(user_id):
+    """Check if the user has at least one subject. If yes, they are onboarded."""
+    db = connect()  # Ensure connect() properly returns a pymysql connection object
+    cursor = db.cursor(pymysql.cursors.DictCursor)  # DictCursor to return results as dictionaries
+
+    try:
+        query = "SELECT COUNT(*) as subject_count FROM subjects WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()  # Fetch the first row
+        
+        subject_count = result["subject_count"] if result else 0
+        return "yes" if subject_count > 0 else "no"
+
+    except Exception as e:
+        print(f"Error in is_onboarded: {str(e)}")  # Log error for debugging
+        return "no"
+    
     finally:
         cursor.close()
         db.close()
