@@ -402,46 +402,69 @@
       name: subject
     }));
 
-    // Study Time Line Chart
-    const studyTimeChart = echarts.init(document.getElementById("studyTimeChart"));
-    studyTimeChart.setOption({
-      animation: false,
-      grid: {
-        top: 10,
-        right: 10,
-        bottom: 20,
-        left: 40,
-        containLabel: true,
-      },
-      xAxis: {
-        type: "category",
-        data: labels,
-        axisLine: { lineStyle: { color: "#e5e7eb" } },
-        axisLabel: { color: "#1f2937" },
-      },
-      yAxis: {
-        type: "value",
-        axisLine: { lineStyle: { color: "#e5e7eb" } },
-        axisLabel: { color: "#1f2937" },
-        splitLine: { lineStyle: { color: "#f3f4f6" } },
-      },
-      series: [
-        {
-          data: totalStudyHours,
-          type: "line",
-          smooth: true,
-          symbol: "none",
-          lineStyle: { width: 3 },
-          itemStyle: { color: "rgba(87, 181, 231, 1)" },
-          areaStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(87, 181, 231, 0.2)" },
-              { offset: 1, color: "rgba(87, 181, 231, 0.05)" },
-            ]),
-          },
-        },
-      ],
-    });
+const chemistryData = labels.map(date => Number(studyData[date].Chemistry) || 0);
+const mathData = labels.map(date => Number(studyData[date].Mathematics) || 0);
+const physicsData = labels.map(date => Number(studyData[date].Physics) || 0);
+
+// Initializing chart
+const studyTimeChart = echarts.init(document.getElementById("studyTimeChart"));
+studyTimeChart.setOption({
+  animation: false,
+  grid: {
+    top: 10,
+    right: 10,
+    bottom: 40,
+    left: 50,
+    containLabel: true,
+  },
+  xAxis: {
+    type: "category",
+    data: labels,
+    axisLine: { lineStyle: { color: "#e5e7eb" } },
+    axisLabel: { color: "#1f2937", rotate: 25 },
+  },
+  yAxis: {
+    type: "value",
+    axisLine: { lineStyle: { color: "#e5e7eb" } },
+    axisLabel: { color: "#1f2937" },
+    splitLine: { lineStyle: { color: "#f3f4f6" } },
+  },
+  series: [
+    {
+      name: "Chemistry",
+      data: chemistryData,
+      type: "bar",
+      stack: "study",
+      barWidth: "50%",
+      itemStyle: { color: "#ff6384" },
+    },
+    {
+      name: "Mathematics",
+      data: mathData,
+      type: "bar",
+      stack: "study",
+      barWidth: "50%",
+      itemStyle: { color: "#36a2eb" },
+    },
+    {
+      name: "Physics",
+      data: physicsData,
+      type: "bar",
+      stack: "study",
+      barWidth: "50%",
+      itemStyle: { color: "#ffce56" },
+    },
+  ],
+  tooltip: {
+    trigger: "axis",
+    axisPointer: { type: "shadow" },
+  },
+  legend: {
+    data: ["Chemistry", "Mathematics", "Physics"],
+    textStyle: { color: "#1f2937" },
+  },
+});
+
 
     // Subject Distribution Pie Chart
     const subjectChart = echarts.init(document.getElementById("subjectChart"));

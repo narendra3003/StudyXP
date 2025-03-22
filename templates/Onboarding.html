@@ -123,12 +123,51 @@ document.getElementById('add-subject-btn').addEventListener('click', () => {
   updateProgress();
 });
 
-document.getElementById('save-btn').addEventListener('click', () => {
-  successDialog.classList.remove('hidden');
-  setTimeout(() => {
-    window.location.href = '/dashboard';
-  }, 2000);
+document.getElementById('save-btn').addEventListener('click', async () => {
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    // Collect subjects and their Daily Time Goal dynamically
+    const subjectRows = document.querySelectorAll('#subjects-container');
+    const subjects = [];
+
+    subjectRows.forEach(row => {
+        const subjectName = row.querySelector('.subject-name').value.trim();
+        const dailyTimeGoal = row.querySelector('.daily-time-goal').value.trim();
+
+        if (subjectName && dailyTimeGoal) {
+            subjects.push({ name: subjectName, daily_goal_minutes: parseInt(dailyTimeGoal) });
+        }
+    });
+    console.log("First Name:", firstName);
+    console.log("Last Name:", lastName);
+    console.log("Phone:", phone);
+    console.log("Subjects:", subjects);
+
+
+    if (!firstName || !lastName || subjects.length === 0) {
+        alert("Please fill all required fields!"+firstName+lastName+subjects.length);
+        return;
+    }
+
+    // Send data to Flask via POST request
+    const response = await fetch('/onboarding', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, lastName, phone, subjects })
+    });
+
+    if (response.ok) {
+        successDialog.classList.remove('hidden');
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 2000);
+    } else {
+        alert("Error saving data. Please try again.");
+    }
 });
+
 
 function renderSubjects() {
   subjectsContainer.innerHTML = '';
@@ -140,11 +179,11 @@ function renderSubjects() {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label>Subject Name</label>
-          <input type="text" class="input mt-2" placeholder="Enter subject name" value="${subject.name}">
+          <input class="subject-name" type="text" placeholder="Enter subject name" value="${subject.name}">
         </div>
         <div>
           <label>Daily Time Goal (minutes)</label>
-          <input type="range" min="0" max="180" step="15" value="${subject.timeGoal}">
+          <input class="daily-time-goal" type="range" min="0" max="180" step="15" value="${subject.timeGoal}">
           <span>${subject.timeGoal} min</span>
         </div>
       </div>

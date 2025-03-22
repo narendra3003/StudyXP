@@ -325,26 +325,32 @@ def get_current_streak(user_id):
     db = connect()
     cursor = db.cursor()
 
-    
+    # Fetch study dates in descending order
     cursor.execute("""
-        SELECT DISTINCT date FROM study_logs 
-        WHERE user_id = %s AND date >= %s 
+        SELECT date FROM study_logs 
+        WHERE user_id = %s 
         ORDER BY date DESC
-    """, (user_id, dt.date.today() - dt.timedelta(days=6)))
+    """, (user_id,))
     
     study_dates = [row[0] for row in cursor.fetchall()]
     db.close()
 
-    
+    if not study_dates:
+        return 0, 15  # No streak, 15 days to milestone
+
+    # Calculate streak
     streak = 0
     today = dt.date.today()
 
-    while today in study_dates:
-        streak += 1
-        today -= dt.timedelta(days=1)
+    for date in study_dates:
+        if date == today:
+            streak += 1
+            today -= dt.timedelta(days=1)
+        else:
+            break  # Break on first non-consecutive date
 
-    
-    next_milestone = 15
+    # Determine next milestone
+    next_milestone = (streak // 15 + 1) * 15  # Dynamic milestone increments
     days_to_milestone = max(0, next_milestone - streak)
 
     return streak, days_to_milestone
@@ -565,12 +571,24 @@ def get_study_logs_last_7_days(user_id):
         cursor.execute(query, (user_id, start_date, today))
         results = cursor.fetchall()
 
-        data = {}
+        # Initialize data in descending order (today to last 7 days)
+        data = {str(today - datetime.timedelta(days=i)): {} for i in range(7)}
+
         for subject, date, total_study_time in results:
             date_str = str(date)
             if date_str not in data:
                 data[date_str] = {}
             data[date_str][subject] = total_study_time
+
+        # Ensure all subjects have a default 0 if missing on a particular date
+        subjects_query = "SELECT DISTINCT name FROM subjects WHERE user_id = %s"
+        cursor.execute(subjects_query, (user_id,))
+        subjects = [row[0] for row in cursor.fetchall()]
+
+        for date in data:
+            for subject in subjects:
+                if subject not in data[date]:
+                    data[date][subject] = 0  # Default to 0 minutes if no study time recorded
 
         return data
     except Exception as e:
@@ -625,3 +643,16 @@ def is_onboarded(user_id):
     finally:
         cursor.close()
         db.close()
+
+def get_study_data(user_id, days=30):
+    db = connect2()
+    cursor = db.cursor()
+    query = """
+    SELECT date, subject_id, SUM(study_time) as total_time
+    FROM study_logs
+    WHERE user_id = %s AND date >= CURDATE() - INTERVAL %s DAY
+    GROUP BY date, subject_id
+    ORDER BY date ASC
+    """
+    cursor.execute(query, (user_id, days))  # ✅ Safe parameterized query
+    return cursor.fetchall()

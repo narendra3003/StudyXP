@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Time Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+    <button onclick="fetchStudyData(30)">Last 30 Days</button>
+    <button onclick="fetchStudyData(7)">Last 7 Days</button>
+    <div id="studyChart" style="width: 100%; height: 500px;"></div>
+
+    <script>
+        function fetchStudyData(days) {
+            fetch(`/get_study_data?user_id=101&days=${days}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderChart(data);
+                });
+        }
+
+        function renderChart(data) {
+            let chart = echarts.init(document.getElementById('studyChart'));
+            
+            let dates = Object.keys(data).sort();
+            let subjects = new Set();
+            let seriesData = {};
+
+            dates.forEach(date => {
+                Object.keys(data[date]).forEach(subject => subjects.add(subject));
+            });
+
+            subjects = [...subjects];
+
+            subjects.forEach(subject => {
+                seriesData[subject] = dates.map(date => data[date][subject] || 0);
+            });
+
+            let series = subjects.map(subject => ({
+                name: `Subject ${subject}`,
+                type: 'bar',
+                stack: 'total',
+                data: seriesData[subject]
+            }));
+
+            let option = {
+                tooltip: { trigger: 'axis' },
+                legend: { data: subjects.map(s => `Subject ${s}`) },
+                xAxis: { type: 'category', data: dates },
+                yAxis: { type: 'value', min: 0 },
+                series: series
+            };
+
+            chart.setOption(option);
+        }
+
+        fetchStudyData(30);
+    </script>
+</body>
+</html>

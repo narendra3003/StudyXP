@@ -40,22 +40,29 @@ def dashboard():
 def onboarding():
     user_id = session.get("user_id", DEFAULT_TEST_USER_ID)
 
-    # If onboarding is already done, redirect to dashboard
     if dbm.is_onboarded(user_id) == "yes":
         return redirect(url_for('dashboard'))
 
     if request.method == 'POST':
-        first_name, last_name = request.form.get('firstName'), request.form.get('lastName')
-        subject_name = request.form.get('subjectName')
+        data = request.get_json()
+        first_name, last_name, subjects = data.get('firstName'), data.get('lastName'), data.get('subjects')
 
-        # Save user details in session
+        if not first_name or not last_name or not subjects:
+            return {"error": "Missing data"}, 400
+
         session['user'] = {'first_name': first_name, 'last_name': last_name}
 
-        # Add a subject to complete onboarding
-        query = "INSERT INTO subjects (user_id, name) VALUES (%s, %s)"
-        dbm.execute_query(query, (user_id, subject_name))
+        # Insert each subject into the database
+        for subject in subjects:
+            subject_data = (
+                user_id,
+                subject['name'],
+                subject['daily_goal_minutes'],
+                0  # Default value for total_minutes
+            )
+            dbm.insert_subject(subject_data)
 
-        return redirect(url_for('dashboard'))
+        return {"message": "Success"}, 200
 
     return render_template('onboarding.html')
 
@@ -179,6 +186,28 @@ def log_mock():
         return jsonify({"success": success, "message": message})
     except Exception as e:
         return jsonify({"success": False, "message": "Internal server error"}), 500
+
+
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route("/get_study_data", methods=["GET"])
+def get_study_data():
+    user_id = request.args.get("user_id", type=int)
+    days = request.args.get("days", default=30, type=int)
+
+    # Fetch data from the database
+    raw_data = dbm.get_study_data(user_id, days)  # Your DB function
+
+    # Convert dates to string format
+    formatted_data = {
+        str(row["date"]): {"subject_id": row["subject_id"], "total_time": row["total_time"]}
+        for row in raw_data
+    }
+
+    return jsonify(formatted_data)  # ✅ Now safe for JSON serialization
 
 @app.route('/logout')
 def logout():
