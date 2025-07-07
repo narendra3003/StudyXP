@@ -656,3 +656,12 @@ def get_study_data(user_id, days=30):
     """
     cursor.execute(query, (user_id, days))  # ✅ Safe parameterized query
     return cursor.fetchall()
+
+def get_subjects_by_user(user_id):
+    con = connect()
+    cur = con.cursor()
+    sql = "SELECT subject_id, name, daily_goal_minutes FROM subjects WHERE user_id=%s"
+    cur.execute(sql, (user_id,))
+    data = cur.fetchall()
+    con.close()
+    return data

@@ -14,7 +14,7 @@
 <div class="max-w-4xl mx-auto">
   <div class="text-center mb-12">
     <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 mb-4">
-      Welcome to Your Learning Journey! 🚀
+      Welcome! Let's Get Started
     </h1>
     <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
       <div id="progress-bar" class="h-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all duration-500" style="width: 0;"></div>
@@ -43,15 +43,14 @@
   <div id="subjects-container"></div>
 
   <div class="flex justify-between items-center mt-8">
-    <button id="add-subject-btn" class="btn bg-gradient-to-r from-purple-500 to-blue-500 text-white">Add Subject</button>
-    <button id="save-btn" class="btn bg-gradient-to-r from-green-500 to-teal-500 text-white" disabled>Save & Continue</button>
+    <button id="add-subject-btn" class="btn bg-gradient-to-r from-purple-500 to-blue-500 text-white">Add a Subject</button>
+    <button id="save-btn" class="btn bg-gradient-to-r from-green-500 to-teal-500 text-white" disabled>Finish Setup</button>
   </div>
 
   <div id="success-dialog" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-6 rounded shadow-lg text-center">
-      <h2 class="text-2xl text-green-500 mb-2">Success!</h2>
-      <p class="text-gray-600 mb-2">Your learning plan has been saved!</p>
-      <p class="text-gray-600">Redirecting to dashboard...</p>
+      <h2 class="text-2xl text-green-500 mb-2">All set!</h2>
+      <p class="text-gray-600 mb-2">Redirecting to your dashboard...</p>
     </div>
   </div>
 </div>
@@ -129,7 +128,7 @@ document.getElementById('save-btn').addEventListener('click', async () => {
     const phone = document.getElementById('phone').value.trim();
 
     // Collect subjects and their Daily Time Goal dynamically
-    const subjectRows = document.querySelectorAll('#subjects-container');
+    const subjectRows = subjectsContainer.querySelectorAll('.card');
     const subjects = [];
 
     subjectRows.forEach(row => {
@@ -178,11 +177,11 @@ function renderSubjects() {
     subjectCard.innerHTML = `
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label>Subject Name</label>
+          <label>Subject</label>
           <input class="subject-name" type="text" placeholder="Enter subject name" value="${subject.name}">
         </div>
         <div>
-          <label>Daily Time Goal (minutes)</label>
+          <label>Daily Goal (minutes)</label>
           <input class="daily-time-goal" type="range" min="0" max="180" step="15" value="${subject.timeGoal}">
           <span>${subject.timeGoal} min</span>
         </div>

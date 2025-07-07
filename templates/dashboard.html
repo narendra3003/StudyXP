@@ -57,14 +57,16 @@
   <body class="bg-gray-50">
     <div class="flex h-screen">
       <aside class="w-64 bg-white shadow-lg flex flex-col">
-        <div class="p-6">
-          <h1 class="font-['Pacifico'] text-2xl text-primary">StudyXP</h1>
+        <div class="flex items-center justify-between p-4">
+          <button id="sidebarToggle" class="text-gray-500 hover:text-primary focus:outline-none">
+            <i class="ri-menu-line"></i>
+          </button>
         </div>
         <nav class="flex-1 px-4">
           <div class="space-y-2">
             <a
-              href="#"
-              class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg"
+              href="/dashboard"
+              class="flex items-center px-4 py-3 text-primary bg-gray-100 rounded-lg font-semibold"
             >
               <div class="w-5 h-5 flex items-center justify-center">
                 <i class="ri-dashboard-line"></i>
@@ -96,7 +98,7 @@
           <div class="bg-gray-100 p-4 rounded-lg">
             <div class="flex items-center">
               <div class="ml-3">
-                <p class="text-sm font-medium">Log Out</p>
+                <p class="text-sm font-medium">Sign Out</p>
               </div>
             </div>
           </div>
@@ -107,28 +109,12 @@
       <main class="flex-1 overflow-y-auto">
         <header class="bg-white shadow-sm">
           <div class="flex items-center justify-between px-8 py-4">
+            <a href="/dashboard" class="flex items-center space-x-2">
+              <h1 class="font-['Pacifico'] text-2xl text-primary cursor-pointer">StudyXP</h1>
+            </a>
             <div class="flex items-center space-x-4">
-              
-            </div>
-            <div class="flex items-center space-x-4">
-              <a href="/rewards">
-                <button
-                  class="relative w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full"
-                >
-                  <i class="ri-notification-line"></i>
-                  <span
-                    class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"
-                  ></span>
-                </button>
-              </a>
-              <div class="flex items-center space-x-2">
-                <img
-                  src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
-                  class="w-8 h-8 rounded-full object-cover"
-                  alt="Profile"
-                />
-                <span class="text-sm font-medium">{{user[1]}}</span>
-              </div>
+              <span class="text-sm font-medium">Hi, {{ user[1] }}!</span>
+              <a href="/" class="ml-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary">Sign Out</a>
             </div>
           </div>
         </header>
@@ -178,7 +164,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">Current Streak</h3>
                 <div class="w-8 h-8 flex items-center justify-center text-primary">
-                    <i class="ri-fire-line ri-xl"></i>
+                    <i class="ri-fire-line ri-xl" aria-label="Streak"></i>
                 </div>
             </div>
             <div class="flex items-end space-x-2">
@@ -290,19 +276,19 @@
 <div id="studyLogModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
   <div class="bg-white rounded-lg w-[480px] p-6">
     <div class="flex justify-between items-center mb-6">
-      <h3 class="text-xl font-semibold">Log Study Session</h3>
+      <h3 class="text-xl font-semibold">Add Study Session</h3>
       <button onclick="toggleStudyLogModal()" class="text-gray-400 hover:text-gray-600">
         <i class="ri-close-line ri-lg"></i>
       </button>
     </div>
     <form id="studyLogForm" class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Choose Subject</label>
         <div class="relative">
-          <select id="subjectSelect" class="w-full pl-3 pr-10 py-2 text-sm border rounded-lg appearance-none">
-            <option value="mathematics">Mathematics</option>
-            <option value="physics">Physics</option>
-            <option value="chemistry">Chemistry</option>
+          <select id="subjectSelect" class="w-full pl-3 pr-10 py-2 text-sm border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary">
+            {% for subject in subjects %}
+              <option value="{{ subject[1] }}">{{ subject[1] }}</option>
+            {% endfor %}
           </select>
           <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
             <i class="ri-arrow-down-s-line text-gray-400"></i>
@@ -310,15 +296,12 @@
         </div>
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Study Duration (Min)</label>
-        <input type="number" id="studyDuration" min="0.5" max="720" step="0.5" class="w-full px-3 py-2 text-sm border rounded-lg" placeholder="Enter minutes" />
-      </div>
-      <div>
-       
+        <label class="block text-sm font-medium text-gray-700 mb-1">Minutes Studied</label>
+        <input type="number" id="studyDuration" min="0.5" max="720" step="0.5" class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter minutes" />
       </div>
       <div class="flex justify-end space-x-3 mt-6">
-        <button type="button" onclick="toggleStudyLogModal()" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border rounded-button">Cancel</button>
-        <button type="submit" class="px-4 py-2 text-sm text-white bg-primary hover:bg-primary/90 rounded-button">Save Session</button>
+        <button type="button" onclick="toggleStudyLogModal()" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary">Cancel</button>
+        <button type="submit" class="px-4 py-2 text-sm text-white bg-primary hover:bg-primary/90 rounded-button focus:outline-none focus:ring-2 focus:ring-primary">Add Session</button>
       </div>
     </form>
   </div>
@@ -376,110 +359,95 @@
     }
   }
 
+  // Use subjects from Jinja context
+  const subjects = [
+    {% for subject in subjects %}
+      { id: {{ subject[0] }}, name: "{{ subject[1] }}", goal: {{ subject[2] }} },
+    {% endfor %}
+  ];
+
+  // Dynamically build chart series and legends
+  function buildChartData(studyData, labels) {
+    // Optionally assign color in the object below if you want
+    return subjects.map(subj => ({
+      name: subj.name,
+      data: labels.map(date => (Number(studyData[date]?.[subj.name]) || 0) / 60),
+      type: "bar",
+      stack: "study",
+      barWidth: "50%",
+    }));
+  }
+
   async function renderCharts() {
     const studyData = await fetchStudyData();
-
-    // Prepare X-axis labels (last 7 days) and subject-wise study time
     const labels = Object.keys(studyData).sort();
     let subjectTotals = {};
     let totalStudyHours = [];
-
     labels.forEach(date => {
       let dailyTotal = 0;
       Object.entries(studyData[date]).forEach(([subject, hours]) => {
-  const studyHours = parseFloat(hours) || 0;  // Ensure numeric conversion
-  subjectTotals[subject] = (subjectTotals[subject] || 0) + studyHours;
-  dailyTotal += studyHours;
-});
-
-
+        const studyHours = parseFloat(hours) || 0;
+        subjectTotals[subject] = (subjectTotals[subject] || 0) + studyHours;
+        dailyTotal += studyHours;
+      });
       totalStudyHours.push(dailyTotal);
     });
-
     // Prepare pie chart data (subject-wise distribution)
     const subjectData = Object.entries(subjectTotals).map(([subject, value]) => ({
       value: value / 60,
       name: subject
     }));
-
-const chemistryData = labels.map(date => (Number(studyData[date].Chemistry) || 0) / 60);
-const mathData = labels.map(date => (Number(studyData[date].Mathematics) || 0) / 60);
-const physicsData = labels.map(date => (Number(studyData[date].Physics) || 0) / 60);
-
-// Initializing chart
-const studyTimeChart = echarts.init(document.getElementById("studyTimeChart"));
-studyTimeChart.setOption({
-  animation: false,
-  grid: {
-    top: 10,
-    right: 10,
-    bottom: 40,
-    left: 50,
-    containLabel: true,
-  },
-  xAxis: {
-    type: "category",
-    data: labels,
-    axisLine: { lineStyle: { color: "#e5e7eb" } },
-    axisLabel: { color: "#1f2937", rotate: 25 },
-    name: "Date",
-    nameLocation: "middle",
-    nameGap: 30
-  },
-  yAxis: {
-    type: "value",
-    axisLine: { lineStyle: { color: "#e5e7eb" } },
-    axisLabel: { color: "#1f2937" },
-    splitLine: { lineStyle: { color: "#f3f4f6" } },
-    name: "Hours Studied",
-    nameLocation: "middle",
-    nameGap: 40
-  },
-  series: [
-    {
-      name: "Chemistry",
-      data: chemistryData,
-      type: "bar",
-      stack: "study",
-      barWidth: "50%",
-      itemStyle: { color: "#ff6384" },
-    },
-    {
-      name: "Mathematics",
-      data: mathData,
-      type: "bar",
-      stack: "study",
-      barWidth: "50%",
-      itemStyle: { color: "#36a2eb" },
-    },
-    {
-      name: "Physics",
-      data: physicsData,
-      type: "bar",
-      stack: "study",
-      barWidth: "50%",
-      itemStyle: { color: "#ffce56" },
-    },
-  ],
-  tooltip: {
-    trigger: "axis",
-    axisPointer: { type: "shadow" },
-    formatter: function(params) {
-      let out = `<b>${params[0].axisValue}</b><br/>`;
-      params.forEach(p => {
-        out += `<span style='color:${p.color}'>●</span> <b>${p.seriesName}</b>: ${p.data.toFixed(2)} hours<br/>`;
-      });
-      const total = params.reduce((sum, p) => sum + (p.data || 0), 0);
-      out += `<b>Total:</b> ${total.toFixed(2)} hours`;
-      return out;
-    }
-  },
-  legend: {
-    data: ["Chemistry", "Mathematics", "Physics"],
-    textStyle: { color: "#1f2937" },
-    top: 0
-  },
-});
+    // Build dynamic series
+    const series = buildChartData(studyData, labels);
+    // Initializing chart
+    const studyTimeChart = echarts.init(document.getElementById("studyTimeChart"));
+    studyTimeChart.setOption({
+      animation: false,
+      grid: {
+        top: 10,
+        right: 10,
+        bottom: 40,
+        left: 50,
+        containLabel: true,
+      },
+      xAxis: {
+        type: "category",
+        data: labels,
+        axisLine: { lineStyle: { color: "#e5e7eb" } },
+        axisLabel: { color: "#1f2937", rotate: 25 },
+        name: "Date",
+        nameLocation: "middle",
+        nameGap: 30
+      },
+      yAxis: {
+        type: "value",
+        axisLine: { lineStyle: { color: "#e5e7eb" } },
+        axisLabel: { color: "#1f2937" },
+        splitLine: { lineStyle: { color: "#f3f4f6" } },
+        name: "Hours Studied",
+        nameLocation: "middle",
+        nameGap: 40
+      },
+      series: series,
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "shadow" },
+        formatter: function(params) {
+          let out = `<b>${params[0].axisValue}</b><br/>`;
+          params.forEach(p => {
+            out += `<span style='color:${p.color}'>●</span> <b>${p.seriesName}</b>: ${p.data.toFixed(2)} hours<br/>`;
+          });
+          const total = params.reduce((sum, p) => sum + (p.data || 0), 0);
+          out += `<b>Total:</b> ${total.toFixed(2)} hours`;
+          return out;
+        }
+      },
+      legend: {
+        data: subjects.map(s => s.name),
+        textStyle: { color: "#1f2937" },
+        top: 0
+      },
+    });
 
 
     // Subject Distribution Pie Chart
@@ -535,6 +503,16 @@ studyTimeChart.setOption({
   }
 
   renderCharts();
+</script>
+
+<script>
+  const sidebar = document.querySelector('aside');
+  const toggleBtn = document.getElementById('sidebarToggle');
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-20');
+    sidebar.querySelectorAll('span').forEach(span => span.classList.toggle('hidden'));
+  });
 </script>
 
   </body>

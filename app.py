@@ -28,12 +28,14 @@ def dashboard():
     subject_distribution = dbm.get_subject_distribution(user_id)
     notifications = dbm.get_notifications(user_id)
     user = dbm.get_user_by_id(user_id)
+    subjects = dbm.get_subjects_by_user(user_id)
 
     return render_template(
         "dashboard.html", total_hours=total_hours, goal_percentage=goal_percentage,
         current_streak=current_streak, days_to_milestone=days_to_milestone,
         total_xp=total_xp, study_time_data=study_time_data,
-        subject_distribution=subject_distribution, notifications=notifications, user=user
+        subject_distribution=subject_distribution, notifications=notifications, user=user,
+        subjects=subjects
     )
 
 @app.route('/onboarding', methods=['GET', 'POST'])
@@ -132,9 +134,13 @@ def insights():
     total_hours, goal_percentage = dbm.get_today_progress(user_id)
     current_streak, days_to_milestone = dbm.get_current_streak(user_id)
     total_xp = dbm.get_xp_progress(user_id)
+    user = dbm.get_user_by_id(user_id)
+    subjects = dbm.get_subjects_by_user(user_id)
 
     return render_template("insights.html", total_hours=total_hours, goal_percentage=goal_percentage, 
-                           current_streak=current_streak, days_to_milestone=days_to_milestone, total_xp=total_xp)
+                           current_streak=current_streak, days_to_milestone=days_to_milestone, total_xp=total_xp,user=user,
+                           subjects=subjects
+    )
 
 @app.route("/rewards")
 def rewards():
@@ -143,12 +149,13 @@ def rewards():
     subjects = dbm.get_study_progress(user_id)
     notifications = dbm.get_notifications(user_id)
     total_hours, goal_percentage = dbm.get_today_progress(user_id)
+    user = dbm.get_user_by_id(user_id)
     current_streak, days_to_milestone = dbm.get_current_streak(user_id)
     total_xp = dbm.get_xp_progress(user_id)
 
     return render_template("rewards.html", total_hours=total_hours, goal_percentage=goal_percentage, 
                            current_streak=current_streak, days_to_milestone=days_to_milestone, total_xp=total_xp, 
-                           subjects=subjects, notifications=notifications, 
+                           subjects=subjects, notifications=notifications, user=user,
                            AI_text=recomend.analyze_study_pattern(dbm.getStudyHoursPerDay(user_id), 
                                                                   dbm.mock_test_scores(user_id)))
 

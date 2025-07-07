@@ -53,11 +53,11 @@
   <body class="bg-gray-50">
     <div class="flex h-screen">
       <aside class="w-64 bg-white shadow-lg flex flex-col">
-        <a href="{{ url_for('dashboard') }}">
-        <div class="p-6">
-          <h1 class="font-['Pacifico'] text-2xl text-primary">StudyXP</h1>
+        <div class="flex items-center justify-between p-4">
+          <button id="sidebarToggle" class="text-gray-500 hover:text-primary focus:outline-none">
+            <i class="ri-menu-line"></i>
+          </button>
         </div>
-    </a>
         <nav class="flex-1 px-4">
           <div class="space-y-2">
             <a href="{{ url_for('dashboard') }}"
@@ -77,10 +77,10 @@
               <span class="ml-3">Insights</span>
             </a>
             <a href="{{ url_for('rewards') }}"
-              class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg"
+              class="flex items-center px-4 py-3 text-primary bg-gray-100 rounded-lg font-semibold"
             >
               <div class="w-5 h-5 flex items-center justify-center">
-                <i class="ri-trophy-line"></i>
+                <i class="ri-trophy-line" aria-label="Rewards"></i>
               </div>
               <span class="ml-3">Rewards</span>
             </a>
@@ -91,7 +91,7 @@
             <div class="bg-gray-100 p-4 rounded-lg">
               <div class="flex items-center">
                 <div class="ml-3">
-                  <p class="text-sm font-medium">Log Out</p>
+                  <p class="text-sm font-medium">Sign Out</p>
                 </div>
               </div>
             </div>
@@ -101,26 +101,12 @@
       <main class="flex-1 overflow-y-auto bg-gray-50">
         <header class="bg-white shadow-sm">
           <div class="flex items-center justify-between px-8 py-4">
-            <h1 class="text-2xl font-bold">Rewards & Achievements</h1>
+            <a href="/dashboard" class="flex items-center space-x-2">
+              <h1 class="font-['Pacifico'] text-2xl text-primary cursor-pointer">StudyXP</h1>
+            </a>
             <div class="flex items-center space-x-4">
-                <a href="Rewards.html">
-                    <button
-                      class="relative w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full"
-                    >
-                      <i class="ri-notification-line"></i>
-                      <span
-                        class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"
-                      ></span>
-                    </button>
-                  </a>
-              <div class="flex items-center space-x-2">
-                <img
-                  src="https://public.readdy.ai/ai/img_res/e0c2c07406d52adae48275d272c29f4a.jpg"
-                  class="w-8 h-8 rounded-full object-cover"
-                  alt="Profile"
-                />
-                <span class="text-sm font-medium">Sanchita Warade</span>
-              </div>
+              <span class="text-sm font-medium">Hi, {{ user[1] }}!</span>
+              <a href="/" class="ml-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary">Sign Out</a>
             </div>
           </div>
         </header>
@@ -129,7 +115,7 @@
             <div class="col-span-8">
               <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
                 <div class="flex items-center justify-between mb-6">
-                  <h2 class="text-lg font-semibold">XP Progress</h2>
+                  <h2 class="text-lg font-semibold">Total XP</h2>
                   <div class="flex items-center space-x-2">
                     <span class="text-sm text-gray-500">1200</span>
                     <span class="text-sm text-gray-500">XP</span>
@@ -170,7 +156,7 @@
                   </div>
                 </div>
                 <div class="mt-6">
-                  <h3 class="text-sm font-medium mb-4">Recent XP Activity</h3>
+                  <h3 class="text-sm font-medium mb-4">Recent XP</h3>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between text-sm" title="Mathematics Goal Completed: +150 XP" aria-label="Mathematics Goal Completed: +150 XP">
                       <div class="flex items-center space-x-3">
@@ -212,7 +198,7 @@
             </div>
             <div class="col-span-4" style="height: auto;">
               <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
-                <h2 class="text-lg font-semibold mb-4">⭐ AI Recomendation</h2>
+                <h2 class="text-lg font-semibold mb-4">Personalized Tip</h2>
                 <!-- <div class="flex items-center space-x-3">
                     <div
                       class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-lg text-blue-500"
@@ -236,9 +222,7 @@
 
                 <div class="mt-6">
                   <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm font-medium"
-                      >Today's Goal Progress</span
-                    >
+                    <span class="text-sm font-medium">Today's Goal</span>
                     <span class="text-sm text-gray-500">4.5/6 hours</span>
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-1.5">
@@ -534,6 +518,13 @@
       updateWeeklyProgress("current");
       window.addEventListener("resize", () => {
         Object.values(charts).forEach((chart) => chart.resize());
+      });
+      const sidebar = document.querySelector('aside');
+      const toggleBtn = document.getElementById('sidebarToggle');
+      toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('w-64');
+        sidebar.classList.toggle('w-20');
+        sidebar.querySelectorAll('span').forEach(span => span.classList.toggle('hidden'));
       });
     </script>
   </body>

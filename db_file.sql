@@ -65,6 +65,87 @@ create table xp_rewards (
     foreign key (user_id) references users(user_id) on delete cascade
 ) auto_increment=101;
 
+-- 1. XP for every 60 minutes of study (per study_log insert)
+DELIMITER //
+CREATE TRIGGER xp_for_studylog AFTER INSERT ON study_logs
+FOR EACH ROW
+BEGIN
+  DECLARE xp INT;
+  DECLARE subj_name VARCHAR(100);
+  SELECT name INTO subj_name FROM subjects WHERE subject_id = NEW.subject_id;
+  SET xp = FLOOR(NEW.study_time / 60) * 10;
+  IF xp > 0 THEN
+    INSERT INTO xp_rewards (user_id, xp_gained, reason) VALUES (NEW.user_id, xp, CONCAT('You earned ', xp, ' XP for studying ', NEW.study_time, ' minutes of ', subj_name, '!'));
+    INSERT INTO notifications (user_id, type, message, status) VALUES (NEW.user_id, 'xp_message', CONCAT('You earned ', xp, ' XP for studying ', NEW.study_time, ' minutes of ', subj_name, '!'), 'unread');
+  END IF;
+END;//
+
+-- 2. XP for subject goal completion (50 XP per subject per day, once per subject per day)
+DELIMITER //
+CREATE TRIGGER xp_for_subject_goal AFTER INSERT ON study_logs
+FOR EACH ROW
+BEGIN
+  DECLARE total INT;
+  DECLARE goal INT;
+  DECLARE subj_name VARCHAR(100);
+  SELECT name INTO subj_name FROM subjects WHERE subject_id = NEW.subject_id;
+  SELECT SUM(study_time) INTO total FROM study_logs WHERE user_id = NEW.user_id AND subject_id = NEW.subject_id AND date = NEW.date;
+  SELECT daily_goal_minutes INTO goal FROM subjects WHERE subject_id = NEW.subject_id;
+  IF total >= goal AND NOT EXISTS (
+    SELECT 1 FROM xp_rewards WHERE user_id = NEW.user_id AND reason = CONCAT('Subject goal completed for subject ', NEW.subject_id, ' on ', NEW.date)
+  ) THEN
+    INSERT INTO xp_rewards (user_id, xp_gained, reason) VALUES (NEW.user_id, 50, CONCAT('You earned 50 XP for completing your daily goal in ', subj_name, ' on ', NEW.date, '!'));
+    INSERT INTO notifications (user_id, type, message, status) VALUES (NEW.user_id, 'xp_message', CONCAT('You earned 50 XP for completing your daily goal in ', subj_name, '!'), 'unread');
+  END IF;
+END;//
+
+-- 3. Add study_log for mock test and give XP/notification for mock test
+CREATE TRIGGER studylog_for_mocktest AFTER INSERT ON mock_tests
+FOR EACH ROW
+BEGIN
+  DECLARE subj_name VARCHAR(100);
+  SELECT name INTO subj_name FROM subjects WHERE subject_id = NEW.subject_id;
+  INSERT INTO study_logs (user_id, subject_id, date, study_time)
+  VALUES (NEW.user_id, NEW.subject_id, NEW.date, NEW.time_taken);
+  INSERT INTO xp_rewards (user_id, xp_gained, reason) VALUES (NEW.user_id, 20, CONCAT('You earned 20 XP for completing a mock test in ', subj_name, '!'));
+  INSERT INTO notifications (user_id, type, message, status) VALUES (NEW.user_id, 'xp_message', CONCAT('You earned 20 XP for completing a mock test in ', subj_name, '!'), 'unread');
+END;//
+
+DELIMITER //
+
+-- 5. Notification for 0 study hours (daily event)
+CREATE EVENT IF NOT EXISTS notify_zero_study
+ON SCHEDULE EVERY 1 DAY STARTS (CURRENT_DATE + INTERVAL 1 DAY)
+DO
+BEGIN
+  DECLARE done INT DEFAULT 0;
+  DECLARE uid INT;
+  DECLARE cur CURSOR FOR SELECT user_id FROM users;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+  OPEN cur;
+  read_loop: LOOP
+    FETCH cur INTO uid;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM study_logs WHERE user_id = uid AND date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)) THEN
+      INSERT INTO notifications (user_id, type, message, status) VALUES (uid, 'reminder', 'You did not log any study yesterday! Stay on track!', 'unread');
+    END IF;
+  END LOOP;
+  CLOSE cur;
+END;//
+
+-- 6. XP/notification for any XP reward (keeps user XP in sync)
+CREATE TRIGGER after_xp_insert
+AFTER INSERT ON xp_rewards
+FOR EACH ROW
+BEGIN
+  UPDATE users SET total_xp = total_xp + NEW.xp_gained WHERE user_id = NEW.user_id;
+  -- Notification already handled in other triggers
+END;//
+
+DELIMITER ;
+
 delimiter //
 
 create trigger after_study_log_insert
@@ -106,19 +187,6 @@ begin
         insert into xp_rewards (user_id, xp_gained, reason) 
         values (new.user_id, 10, 'daily study goal achieved');
     end if;
-end;
-//
-
-create trigger after_xp_insert
-after insert on xp_rewards
-for each row
-begin
-    update users 
-    set total_xp = total_xp + new.xp_gained 
-    where user_id = new.user_id;
-
-    insert into notifications (user_id, type, message, status) 
-    values (new.user_id, 'xp_message', concat('you earned ', new.xp_gained, ' xp!'), 'unread');
 end;
 //
 
