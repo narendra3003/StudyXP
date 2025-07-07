@@ -61,7 +61,7 @@
         <nav class="flex-1 px-4">
           <div class="space-y-2">
             <a href="/dashboard"
-              class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
                 <i class="ri-dashboard-line"></i>
@@ -69,7 +69,7 @@
               <span class="ml-3">Dashboard</span>
             </a>
             <a href="/insights"
-              class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              class="flex items-center px-4 py-3 text-gray-600 bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
                 <i class="ri-bar-chart-line"></i>
@@ -222,13 +222,13 @@
                 <h3 class="text-lg font-semibold">Study Time Distribution</h3>
                 <div class="flex space-x-2">
                   <button
-                    onclick="updateTimeDistribution('week')"
+                    onclick="updateTimeDistribution('week', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full time-filter active"
                   >
                     Week
                   </button>
                   <button
-                    onclick="updateTimeDistribution('month')"
+                    onclick="updateTimeDistribution('month', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full time-filter"
                   >
                     Month
@@ -242,13 +242,13 @@
                 <h3 class="text-lg font-semibold">Subject Distribution</h3>
                 <div class="flex space-x-2">
                   <button
-                    onclick="updateSubjectDistribution('current')"
+                    onclick="updateSubjectDistribution('current', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full period-filter active"
                   >
                     Current
                   </button>
                   <button
-                    onclick="updateSubjectDistribution('previous')"
+                    onclick="updateSubjectDistribution('previous', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full period-filter"
                   >
                     Previous
@@ -264,13 +264,13 @@
                 <h3 class="text-lg font-semibold">Daily Subject Time</h3>
                 <div class="flex space-x-2">
                   <button
-                    onclick="updateDailySubjectTime('today')"
+                    onclick="updateDailySubjectTime('today', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full daily-filter active"
                   >
                     Today
                   </button>
                   <button
-                    onclick="updateDailySubjectTime('yesterday')"
+                    onclick="updateDailySubjectTime('yesterday', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full daily-filter"
                   >
                     Yesterday
@@ -284,13 +284,13 @@
                 <h3 class="text-lg font-semibold">Weekly Progress</h3>
                 <div class="flex space-x-2">
                   <button
-                    onclick="updateWeeklyProgress('current')"
+                    onclick="updateWeeklyProgress('current', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full weekly-filter active"
                   >
                     This Week
                   </button>
                   <button
-                    onclick="updateWeeklyProgress('previous')"
+                    onclick="updateWeeklyProgress('previous', event)"
                     class="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-full weekly-filter"
                   >
                     Last Week
@@ -360,80 +360,30 @@
       </main>
     </div>
     <script>
-      const mockData = {
-        weeklyStudyTime: {
-          week: {
-            dates: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-            hours: [3.5, 4.2, 3.8, 5.0, 4.5, 3.2, 4.5],
-          },
-          month: {
-            dates: ["Week 1", "Week 2", "Week 3", "Week 4"],
-            hours: [25.5, 28.2, 30.8, 27.0],
-          },
-        },
-        subjectDistribution: {
-          current: [
-            { value: 40, name: "Mathematics" },
-            { value: 30, name: "Physics" },
-            { value: 20, name: "Chemistry" },
-            { value: 10, name: "Biology" },
-          ],
-          previous: [
-            { value: 35, name: "Mathematics" },
-            { value: 25, name: "Physics" },
-            { value: 25, name: "Chemistry" },
-            { value: 15, name: "Biology" },
-          ],
-        },
-        dailySubjectTime: {
-          today: [
-            { subject: "Mathematics", hours: 2.5 },
-            { subject: "Physics", hours: 1.8 },
-            { subject: "Chemistry", hours: 1.2 },
-            { subject: "Biology", hours: 0.8 },
-          ],
-          yesterday: [
-            { subject: "Mathematics", hours: 2.0 },
-            { subject: "Physics", hours: 2.2 },
-            { subject: "Chemistry", hours: 1.5 },
-            { subject: "Biology", hours: 1.0 },
-          ],
-        },
-        weeklyProgress: {
-          current: [
-            { date: "Mon", hours: 4.5, target: 5 },
-            { date: "Tue", hours: 5.2, target: 5 },
-            { date: "Wed", hours: 4.8, target: 5 },
-            { date: "Thu", hours: 6.0, target: 5 },
-            { date: "Fri", hours: 5.5, target: 5 },
-            { date: "Sat", hours: 3.2, target: 5 },
-            { date: "Sun", hours: 4.5, target: 5 },
-          ],
-          previous: [
-            { date: "Mon", hours: 4.0, target: 5 },
-            { date: "Tue", hours: 4.8, target: 5 },
-            { date: "Wed", hours: 5.2, target: 5 },
-            { date: "Thu", hours: 4.5, target: 5 },
-            { date: "Fri", hours: 5.0, target: 5 },
-            { date: "Sat", hours: 3.8, target: 5 },
-            { date: "Sun", hours: 4.2, target: 5 },
-          ],
-        },
-      };
       const charts = {
         studyTime: echarts.init(document.getElementById("studyTimeChart")),
         subject: echarts.init(document.getElementById("subjectChart")),
         dailySubject: echarts.init(document.getElementById("dailySubjectChart")),
         weeklyProgress: echarts.init(document.getElementById("weeklyProgressChart")),
       };
-      function updateTimeDistribution(period) {
+      async function updateTimeDistribution(period, evt) {
         document.querySelectorAll(".time-filter").forEach((btn) => {
           btn.classList.remove("bg-primary", "text-white");
           btn.classList.add("bg-gray-100", "text-gray-600");
         });
-        event.target.classList.remove("bg-gray-100", "text-gray-600");
-        event.target.classList.add("bg-primary", "text-white");
-        const data = mockData.weeklyStudyTime[period];
+        if (evt && evt.target) {
+          evt.target.classList.remove("bg-gray-100", "text-gray-600");
+          evt.target.classList.add("bg-primary", "text-white");
+        } else {
+          document.querySelectorAll(".time-filter").forEach((btn) => {
+            if (btn.textContent.trim().toLowerCase() === period) {
+              btn.classList.add("bg-primary", "text-white");
+              btn.classList.remove("bg-gray-100", "text-gray-600");
+            }
+          });
+        }
+        const res = await fetch(`/api/study_time_distribution?period=${period}`);
+        const data = await res.json();
         charts.studyTime.setOption({
           animation: false,
           grid: {
@@ -477,21 +427,47 @@
               },
             },
           ],
+          tooltip: {
+            trigger: "axis",
+            axisPointer: { type: "shadow" },
+            formatter: function(params) {
+              // params is an array for axis trigger
+              const p = params[0];
+              return `<b>${p.axisValue}</b><br/>Hours Studied: <b>${p.data.toFixed(2)} hours</b>`;
+            }
+          },
         });
       }
-      function updateSubjectDistribution(period) {
+      async function updateSubjectDistribution(period, evt) {
         document.querySelectorAll(".period-filter").forEach((btn) => {
           btn.classList.remove("bg-primary", "text-white");
           btn.classList.add("bg-gray-100", "text-gray-600");
         });
-        event.target.classList.remove("bg-gray-100", "text-gray-600");
-        event.target.classList.add("bg-primary", "text-white");
+        if (evt && evt.target) {
+          evt.target.classList.remove("bg-gray-100", "text-gray-600");
+          evt.target.classList.add("bg-primary", "text-white");
+        } else {
+          document.querySelectorAll(".period-filter").forEach((btn) => {
+            if (btn.textContent.trim().toLowerCase() === period) {
+              btn.classList.add("bg-primary", "text-white");
+              btn.classList.remove("bg-gray-100", "text-gray-600");
+            }
+          });
+        }
+        const res = await fetch(`/api/subject_distribution?period=${period}`);
+        const data = await res.json();
+        const total = data.reduce((sum, d) => sum + d.value, 0);
         charts.subject.setOption({
           animation: false,
           tooltip: {
             trigger: "item",
             backgroundColor: "rgba(255, 255, 255, 0.9)",
             textStyle: { color: "#1f2937" },
+            formatter: function(params) {
+              const hours = params.value.toFixed(2);
+              const percent = params.percent;
+              return `<b>${params.name}</b><br/>${hours} hours (${percent}%)`;
+            }
           },
           series: [
             {
@@ -505,10 +481,12 @@
               label: {
                 show: true,
                 position: "outside",
-                formatter: "{b}: {d}%",
+                formatter: function(params) {
+                  return `${params.name}: ${params.percent}%\n(${params.value.toFixed(2)}h)`;
+                },
                 color: "#1f2937",
               },
-              data: mockData.subjectDistribution[period],
+              data: data,
               color: [
                 "rgba(87, 181, 231, 1)",
                 "rgba(141, 211, 199, 1)",
@@ -519,19 +497,33 @@
           ],
         });
       }
-      function updateDailySubjectTime(period) {
+      async function updateDailySubjectTime(period, evt) {
         document.querySelectorAll(".daily-filter").forEach((btn) => {
           btn.classList.remove("bg-primary", "text-white");
           btn.classList.add("bg-gray-100", "text-gray-600");
         });
-        event.target.classList.remove("bg-gray-100", "text-gray-600");
-        event.target.classList.add("bg-primary", "text-white");
-        const data = mockData.dailySubjectTime[period];
+        if (evt && evt.target) {
+          evt.target.classList.remove("bg-gray-100", "text-gray-600");
+          evt.target.classList.add("bg-primary", "text-white");
+        } else {
+          document.querySelectorAll(".daily-filter").forEach((btn) => {
+            if (btn.textContent.trim().toLowerCase() === period) {
+              btn.classList.add("bg-primary", "text-white");
+              btn.classList.remove("bg-gray-100", "text-gray-600");
+            }
+          });
+        }
+        const res = await fetch(`/api/daily_subject_time?period=${period}`);
+        const data = await res.json();
         charts.dailySubject.setOption({
           animation: false,
           tooltip: {
             trigger: "axis",
             axisPointer: { type: "shadow" },
+            formatter: function(params) {
+              // params is an array for axis trigger
+              return params.map(p => `<b>${p.name}</b>: ${p.data.toFixed(2)} hours`).join('<br/>');
+            }
           },
           grid: {
             left: "3%",
@@ -560,19 +552,35 @@
           ],
         });
       }
-      function updateWeeklyProgress(period) {
+      async function updateWeeklyProgress(period, evt) {
         document.querySelectorAll(".weekly-filter").forEach((btn) => {
           btn.classList.remove("bg-primary", "text-white");
           btn.classList.add("bg-gray-100", "text-gray-600");
         });
-        event.target.classList.remove("bg-gray-100", "text-gray-600");
-        event.target.classList.add("bg-primary", "text-white");
-        const data = mockData.weeklyProgress[period];
+        if (evt && evt.target) {
+          evt.target.classList.remove("bg-gray-100", "text-gray-600");
+          evt.target.classList.add("bg-primary", "text-white");
+        } else {
+          document.querySelectorAll(".weekly-filter").forEach((btn) => {
+            if (btn.textContent.trim().toLowerCase() === (period === 'current' ? 'this week' : 'last week')) {
+              btn.classList.add("bg-primary", "text-white");
+              btn.classList.remove("bg-gray-100", "text-gray-600");
+            }
+          });
+        }
+        const res = await fetch(`/api/weekly_progress?period=${period}`);
+        const data = await res.json();
         charts.weeklyProgress.setOption({
           animation: false,
           tooltip: {
             trigger: "axis",
             axisPointer: { type: "cross" },
+            formatter: function(params) {
+              // params is an array for axis trigger
+              const p = params[0];
+              const t = params.find(x => x.seriesName === 'Target');
+              return `<b>${p.axisValue}</b><br/>Actual: <b>${p.data.toFixed(2)} hours</b><br/>Target: <b>${t ? t.data : ''} hours</b>`;
+            }
           },
           grid: {
             top: 10,
@@ -606,11 +614,56 @@
           ],
         });
       }
-      // Initialize all charts
-      updateTimeDistribution("week");
-      updateSubjectDistribution("current");
-      updateDailySubjectTime("today");
-      updateWeeklyProgress("current");
+      // On DOMContentLoaded, ensure all charts are visible and load default data
+      document.addEventListener('DOMContentLoaded', function() {
+        // Set default active states for buttons
+        document.querySelectorAll('.time-filter').forEach(btn => {
+          if (btn.textContent.trim().toLowerCase() === 'week') {
+            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-gray-100', 'text-gray-600');
+          } else {
+            btn.classList.remove('bg-primary', 'text-white');
+            btn.classList.add('bg-gray-100', 'text-gray-600');
+          }
+        });
+        document.querySelectorAll('.period-filter').forEach(btn => {
+          if (btn.textContent.trim().toLowerCase() === 'current') {
+            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-gray-100', 'text-gray-600');
+          } else {
+            btn.classList.remove('bg-primary', 'text-white');
+            btn.classList.add('bg-gray-100', 'text-gray-600');
+          }
+        });
+        document.querySelectorAll('.daily-filter').forEach(btn => {
+          if (btn.textContent.trim().toLowerCase() === 'today') {
+            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-gray-100', 'text-gray-600');
+          } else {
+            btn.classList.remove('bg-primary', 'text-white');
+            btn.classList.add('bg-gray-100', 'text-gray-600');
+          }
+        });
+        document.querySelectorAll('.weekly-filter').forEach(btn => {
+          if (btn.textContent.trim().toLowerCase() === 'this week') {
+            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-gray-100', 'text-gray-600');
+          } else {
+            btn.classList.remove('bg-primary', 'text-white');
+            btn.classList.add('bg-gray-100', 'text-gray-600');
+          }
+        });
+        // Load default data for all charts
+        updateTimeDistribution('week', null);
+        updateSubjectDistribution('current', null);
+        updateDailySubjectTime('today', null);
+        updateWeeklyProgress('current', null);
+        // Ensure all chart containers are visible
+        document.getElementById('studyTimeChart').style.display = 'block';
+        document.getElementById('subjectChart').style.display = 'block';
+        document.getElementById('dailySubjectChart').style.display = 'block';
+        document.getElementById('weeklyProgressChart').style.display = 'block';
+      });
       window.addEventListener("resize", () => {
         Object.values(charts).forEach((chart) => chart.resize());
       });

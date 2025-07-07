@@ -86,7 +86,17 @@
             </a>
           </div>
         </nav>
-        
+        <div class="p-4">
+          <a href="/">
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div class="ml-3">
+                  <p class="text-sm font-medium">Log Out</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
       </aside>
       <main class="flex-1 overflow-y-auto bg-gray-50">
         <header class="bg-white shadow-sm">
@@ -130,7 +140,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="relative pt-1">
+                <div class="relative pt-1" title="2450/3000 XP (550 XP to next level)" aria-label="2450 out of 3000 XP, 550 XP to next level">
                   <div class="flex mb-2 items-center justify-between">
                     <div>
                       <span
@@ -151,6 +161,8 @@
                     <div
                       style="width:82%"
                       class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary"
+                      title="82% of XP goal completed"
+                      aria-label="82% of XP goal completed"
                     ></div>
                   </div>
                   <div class="text-xs text-gray-500">
@@ -160,7 +172,7 @@
                 <div class="mt-6">
                   <h3 class="text-sm font-medium mb-4">Recent XP Activity</h3>
                   <div class="space-y-3">
-                    <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center justify-between text-sm" title="Mathematics Goal Completed: +150 XP" aria-label="Mathematics Goal Completed: +150 XP">
                       <div class="flex items-center space-x-3">
                         <div
                           class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-lg text-blue-500"
@@ -171,7 +183,7 @@
                       </div>
                       <span class="font-medium text-primary">+150 XP</span>
                     </div>
-                    <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center justify-between text-sm" title="Chemistry Goal Completed: +100 XP" aria-label="Chemistry Goal Completed: +100 XP">
                       <div class="flex items-center space-x-3">
                         <div
                           class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-lg text-green-500"
@@ -182,7 +194,7 @@
                       </div>
                       <span class="font-medium text-primary">+100 XP</span>
                     </div>
-                    <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center justify-between text-sm" title="Daily Goal Achieved: +50 XP" aria-label="Daily Goal Achieved: +50 XP">
                       <div class="flex items-center space-x-3">
                         <div
                           class="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-lg text-purple-500"
@@ -245,7 +257,7 @@
           </div>
           <div class="grid grid-cols-3 gap-6 mb-8">
             {% for subject in subjects %}
-            <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="bg-white p-6 rounded-lg shadow-sm" title="{{ subject.hours//60 }} hours studied, {{ subject.percentage }}% of goal" aria-label="{{ subject.hours//60 }} hours studied, {{ subject.percentage }}% of goal">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold">{{ subject.name }}</h3>
                 </div>
@@ -255,7 +267,7 @@
                 </div>
                 <div class="mt-4">
                     <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div class="h-full bg-primary" style=`width: {{ subject.percentage }}%`></div>
+                        <div class="h-full bg-primary" style=`width: {{ subject.percentage }}%` title="{{ subject.percentage }}% of daily goal completed" aria-label="{{ subject.percentage }}% of daily goal completed"></div>
                     </div>
                     <div class="mt-2 text-sm text-gray-500">
                         {{ subject.percentage }}% of daily goal completed

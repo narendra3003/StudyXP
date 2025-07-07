@@ -214,5 +214,125 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
+# --- Refined Insights API Endpoints ---
+@app.route("/api/study_time_distribution")
+def api_study_time_distribution():
+    user_id = session.get("user_id", DEFAULT_TEST_USER_ID)
+    period = request.args.get("period", "week")
+    import datetime as dt
+    today = dt.date.today()
+    if period == "week":
+        start = today - dt.timedelta(days=6)
+        end = today
+    else:  # month
+        start = today - dt.timedelta(days=29)
+        end = today
+    db = dbm.connect()
+    cursor = db.cursor(dbm.p.cursors.DictCursor)
+    cursor.execute("""
+        SELECT DATE(date) AS study_date, SUM(study_time) AS total_time
+        FROM study_logs
+        WHERE user_id = %s AND date BETWEEN %s AND %s
+        GROUP BY study_date ORDER BY study_date
+    """, (user_id, start, end))
+    data = cursor.fetchall()
+    db.close()
+    # Fill missing days with 0
+    days = [(start + dt.timedelta(days=i)).isoformat() for i in range((end-start).days+1)]
+    date_map = {str(row["study_date"]): float(row["total_time"]) / 60 if row["total_time"] else 0 for row in data}
+    hours = [date_map.get(day, 0) for day in days]
+    return jsonify({"dates": days, "hours": hours})
+
+@app.route("/api/subject_distribution")
+def api_subject_distribution():
+    user_id = session.get("user_id", DEFAULT_TEST_USER_ID)
+    period = request.args.get("period", "current")
+    import datetime as dt
+    today = dt.date.today()
+    # Get week range
+    if period == "current":
+        start = today - dt.timedelta(days=today.weekday())
+        end = start + dt.timedelta(days=6)
+    else:  # previous
+        end = today - dt.timedelta(days=today.weekday() + 1)
+        start = end - dt.timedelta(days=6)
+    db = dbm.connect()
+    cursor = db.cursor(dbm.p.cursors.DictCursor)
+    cursor.execute("""
+        SELECT s.name AS subject, SUM(sl.study_time) AS total_time
+        FROM study_logs sl
+        JOIN subjects s ON sl.subject_id = s.subject_id
+        WHERE sl.user_id = %s AND sl.date BETWEEN %s AND %s
+        GROUP BY s.name
+    """, (user_id, start, end))
+    data = cursor.fetchall()
+    db.close()
+    result = [{"value": float(row["total_time"]) / 60 if row["total_time"] else 0, "name": row["subject"]} for row in data]
+    return jsonify(result)
+
+@app.route("/api/daily_subject_time")
+def api_daily_subject_time():
+    user_id = session.get("user_id", DEFAULT_TEST_USER_ID)
+    period = request.args.get("period", "today")
+    import datetime as dt
+    today = dt.date.today()
+    if period == "today":
+        target_date = today
+    else:
+        target_date = today - dt.timedelta(days=1)
+    db = dbm.connect()
+    cursor = db.cursor(dbm.p.cursors.DictCursor)
+    cursor.execute("""
+        SELECT s.name AS subject, SUM(sl.study_time) AS total_time
+        FROM study_logs sl
+        JOIN subjects s ON sl.subject_id = s.subject_id
+        WHERE sl.user_id = %s AND sl.date = %s
+        GROUP BY s.name
+    """, (user_id, target_date))
+    data = cursor.fetchall()
+    db.close()
+    # Format: list of {subject, hours}
+    result = [{"subject": row["subject"], "hours": float(row["total_time"]) / 60 if row["total_time"] else 0} for row in data]
+    return jsonify(result)
+
+@app.route("/api/weekly_progress")
+def api_weekly_progress():
+    user_id = session.get("user_id", DEFAULT_TEST_USER_ID)
+    period = request.args.get("period", "current")
+    import datetime as dt
+    today = dt.date.today()
+    # Get start of week (Monday)
+    if period == "current":
+        start = today - dt.timedelta(days=today.weekday())
+        end = start + dt.timedelta(days=6)
+    else:
+        end = today - dt.timedelta(days=today.weekday() + 1)
+        start = end - dt.timedelta(days=6)
+    db = dbm.connect()
+    cursor = db.cursor(dbm.p.cursors.DictCursor)
+    cursor.execute("""
+        SELECT s.name AS subject, sl.date, SUM(sl.study_time) AS total_study_time
+        FROM study_logs sl
+        JOIN subjects s ON sl.subject_id = s.subject_id
+        WHERE sl.user_id = %s AND sl.date BETWEEN %s AND %s
+        GROUP BY s.name, sl.date
+        ORDER BY sl.date
+    """, (user_id, start, end))
+    results = cursor.fetchall()
+    db.close()
+    # Build per-day, per-subject dict
+    days = [(start + dt.timedelta(days=i)).isoformat() for i in range(7)]
+    subjects = list({row["subject"] for row in results})
+    # Build {date: {subject: hours}}
+    day_subject = {d: {s: 0 for s in subjects} for d in days}
+    for row in results:
+        d = row["date"].isoformat() if hasattr(row["date"], 'isoformat') else str(row["date"])
+        s = row["subject"]
+        h = float(row["total_study_time"]) / 60 if row["total_study_time"] else 0
+        day_subject[d][s] = h
+    # For each day, sum all subjects for 'hours', and set a target (e.g., 5)
+    progress = [{"date": d, "hours": sum(day_subject[d].values()), "target": 5} for d in days]
+    return jsonify(progress)
+
 if __name__ == "__main__":
     app.run(debug=True)
