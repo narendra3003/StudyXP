@@ -97,9 +97,10 @@
           <a href="/">
           <div class="bg-gray-100 p-4 rounded-lg">
             <div class="flex items-center">
-              <div class="ml-3">
-                <p class="text-sm font-medium">Sign Out</p>
+              <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-logout-box-r-line"></i>
               </div>
+                <span class="text-sm font-medium">Sign Out</p>
             </div>
           </div>
         </a>
@@ -512,6 +513,7 @@
     sidebar.classList.toggle('w-64');
     sidebar.classList.toggle('w-20');
     sidebar.querySelectorAll('span').forEach(span => span.classList.toggle('hidden'));
+    sidebar.querySelectorAll('.sidebar-action span').forEach(span => span.classList.toggle('hidden'));
   });
 </script>
 

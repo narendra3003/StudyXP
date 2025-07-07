@@ -60,7 +60,8 @@
         </div>
         <nav class="flex-1 px-4">
           <div class="space-y-2">
-            <a href="{{ url_for('dashboard') }}"
+            <a
+              href="/dashboard"
               class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -68,7 +69,8 @@
               </div>
               <span class="ml-3">Dashboard</span>
             </a>
-            <a href="{{ url_for('insights') }}"
+            <a
+              href="/insights"
               class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <div class="w-5 h-5 flex items-center justify-center">
@@ -76,11 +78,12 @@
               </div>
               <span class="ml-3">Insights</span>
             </a>
-            <a href="{{ url_for('rewards') }}"
+            <a
+              href="/rewards"
               class="flex items-center px-4 py-3 text-primary bg-gray-100 rounded-lg font-semibold"
             >
               <div class="w-5 h-5 flex items-center justify-center">
-                <i class="ri-trophy-line" aria-label="Rewards"></i>
+                <i class="ri-trophy-line"></i>
               </div>
               <span class="ml-3">Rewards</span>
             </a>
@@ -88,14 +91,15 @@
         </nav>
         <div class="p-4">
           <a href="/">
-            <div class="bg-gray-100 p-4 rounded-lg">
-              <div class="flex items-center">
-                <div class="ml-3">
-                  <p class="text-sm font-medium">Sign Out</p>
-                </div>
+          <div class="bg-gray-100 p-4 rounded-lg">
+            <div class="flex items-center">
+              <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-logout-box-r-line"></i>
               </div>
+                <span class="text-sm font-medium">Sign Out</p>
             </div>
-          </a>
+          </div>
+        </a>
         </div>
       </aside>
       <main class="flex-1 overflow-y-auto bg-gray-50">
@@ -525,6 +529,7 @@
         sidebar.classList.toggle('w-64');
         sidebar.classList.toggle('w-20');
         sidebar.querySelectorAll('span').forEach(span => span.classList.toggle('hidden'));
+        sidebar.querySelectorAll('.sidebar-action span').forEach(span => span.classList.toggle('hidden'));
       });
     </script>
   </body>
